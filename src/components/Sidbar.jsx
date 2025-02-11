@@ -94,7 +94,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                             </span>
                         </div>
                         <div className={` w-full gap-3 py-2 px-3 justify-end ${isActive ? "flex" : "hidden"}`}>
-                            <button onClick={() =>dispatch(logout())} className="bg-black text-white font-bold px-2 py-1 rounded-md cursor-pointer">Logout</button>
+                            <button onClick={() => dispatch(logout())} className="bg-[#357937E0] text-white font-bold px-2 py-1 rounded-md cursor-pointer">Logout</button>
                         </div>
                     </div>
                     :

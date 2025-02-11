@@ -18,7 +18,7 @@ const LoadingButton = ({
                 onClick={chickHandler}
                 disabled={loading}
                 className={clsx(
-                    "inline-flex items-center justify-center m-auto px-4 py-2 text-base font-semibold transition-all duration-200 border border-transparent rounded-md focus:outline-none",
+                    "inline-flex items-center justify-center m-auto px-4 py-1 md:py-2 text-base font-semibold transition-all duration-200 border border-transparent rounded-md focus:outline-none",
                     size,
                     textColor,
                     bgColor,
