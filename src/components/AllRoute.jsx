@@ -17,9 +17,7 @@ export const AllRoute = () => {
       <Route
         path="/"
         element={
-          <PrivateRoute>
             <Home />
-          </PrivateRoute>
         }
       />
       <Route

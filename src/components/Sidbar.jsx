@@ -11,44 +11,6 @@ import { TbBook } from "react-icons/tb";
 // import { BsFillInfoCircleFill } from "react-icons/bs";
 import { logout } from "../redux/slices/authSlice";
 
-const Menu = (props) => {
-    const { children, items } = props
-    const [isOpened, setIsOpened] = useState(false)
-    return (
-        <div className="">
-            <button className="w-full flex items-center justify-between text-gray-600 p-2 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150"
-                onClick={() => setIsOpened(!isOpened)}
-            >
-                <div className="flex items-center gap-x-2">
-                    {children}
-                </div>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={`w-5 h-5 duration-150 ${isOpened ? 'rotate-180' : ''}`}>
-                    <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
-                </svg>
-            </button>
-            {
-                isOpened ? (
-                    <ul className="mx-4 px-2 border-l text-sm font-medium">
-                        {
-                            items.map((item, idx) => (
-                                <li key={idx}>
-                                    <a href={item.href} className="flex items-center gap-x-2 text-gray-600 p-2 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150">
-                                        {
-                                            item.icon ? (
-                                                <div className="text-gray-500">{item.icon}</div>
-                                            ) : ""
-                                        }
-                                        {item.name}
-                                    </a>
-                                </li>
-                            ))
-                        }
-                    </ul>
-                ) : ""
-            }
-        </div>
-    )
-}
 
 const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
     const { user } = useSelector(state => state?.auth)
@@ -122,10 +84,10 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
     return (<>
         {/* md and below screen sidebar */}
         <div className="hidden md:flex flex-col h-full dark:bg-[#2C2C2C] dark:border-0 bg-green-50 px-4 border-r-2 gap-2 ">
-            <div className='mt-2 p-2 m-2 mx-4 rounded-md bg-white shadow-lg dark:bg-[#232323] dark:text-white'>
+            <div className='mt-2 m-2 mx-4 rounded-md shadow-lg'>
                 {user ?
-                    <div className="w-full px-2 flex flex-col dark:bg-[#232323] dark:text-white bg-white">
-                        <div className="flex justify-between items-center">
+                    <div className="w-full px-2 flex flex-col dark:bg-[#232323] dark:text-white bg-white rounded-md">
+                        <div className="flex justify-between items-center px-3">
                             <span className="p-2"><UserProfileIcon user={user} /></span>
                             <span onClick={() => setisActive(!isActive)} className="cursor-pointer">
                                 {isActive ? <IoIosArrowDropdownCircle /> : <IoIosArrowDropupCircle />}
@@ -136,8 +98,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                         </div>
                     </div>
                     :
-                    <div className="w-full flex justify-center items-center gap-x-4 bg-white py-3 mt-1 shadow-md rounded-md">
-                        <Link className="bg-black text-white font-bold px-3 py-1 rounded-md cursor-pointer" to={"/login"}>Login</Link>
+                    <div className="w-full flex justify-center items-center gap-x-4 dark:bg-[#232323] bg-white py-3 mt-1 shadow-md rounded-md">
+                        <Link className="bg-[#357937E0] text-white font-bold px-3 py-1 rounded-md cursor-pointer" to={"/login"}>Login</Link>
                     </div>
                 }
             </div>

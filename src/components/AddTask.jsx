@@ -6,9 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import LoadingButton from './../utils/LodingButton';
 import { addTask } from '../redux/slices/todoSlice';
 import { onOpen } from '../redux/slices/sideBarSlice';
+import { useNavigate } from 'react-router';
 
 export const AddTask = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate()
     const { isLogged } = useSelector(state => state.auth);
     const [addNew, setAddNew] = useState(false)
     const [taskData, setTaskData] = useState({
@@ -46,10 +48,18 @@ export const AddTask = () => {
           } 
     };
 
+    const openTaskForm = ()=>{
+        if(isLogged){
+            setAddNew(true)
+        }
+        else{
+            navigate("/login")
+        }
+    }
 
     return (<>
         <div className={`${!addNew ? "flex" : "hidden"} bg-green-50 dark:bg-[#2F3630] flex justify-end px-5 py-2`} >
-            <button className="bg-[#357937E0] rounded-md px-3 py-1 font-bold text-white" onClick={() => setAddNew(!addNew)}>Add New</button>
+            <button className="bg-[#357937E0] rounded-md px-3 py-1 font-bold text-white" onClick={openTaskForm}>Add New</button>
         </div>
 
         <div className={`${addNew ? "flex" : "hidden"}  w-full dark:bg-[#2F3630] dark:text-white flex-col justify-center items-center gap-2 px-5 text-gray-900 bg-green-100`}>
