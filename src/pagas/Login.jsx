@@ -1,30 +1,31 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { loginUser } from '../redux/actions/user'
 import { Link, useNavigate } from 'react-router'
 import LoadingButton from '../utils/LodingButton'
-import { clearState } from '../redux/slices/authSlice'
+import { clearState, login } from '../redux/slices/authSlice'
 
 export const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { token, error, loading, isLogged } = useSelector(state => state.auth)
+    const { error, loading, isLogged } = useSelector(state => state.auth)
+console.log(isLogged);
 
 
     const hendelLogin = (e) => {
         e.preventDefault()
-        dispatch(loginUser({ email, password }))
+        dispatch(login({ email, password }))
     }
 
     useEffect(() => {
-        if (token) {
+        if (isLogged) {
             navigate("/")
             setEmail("")
             setPassword("")
+            console.log(isLogged);
         }
-    }, [dispatch, token])
+    }, [isLogged])
     return (
         <section className="py-10 bg-gray-50 sm:py-16 lg:py-24">
             <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">

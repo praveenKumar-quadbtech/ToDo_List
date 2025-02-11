@@ -1,45 +1,39 @@
 import { useEffect } from "react";
-import { AddTask } from "../components/AddTask";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTodos } from "../redux/actions/task";
-import { Loading } from "../utils/Loading";
+import { getTasks } from "../redux/slices/todoSlice";
+import { AddTask } from "../components/AddTask";
 import { TaskContener } from "../components/TaskContener";
-import { useNavigate } from "react-router";
+import { AiOutlineInbox } from "react-icons/ai"; // Import an icon
 
 const Home = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { token } = useSelector(state => state.auth);
-  const { items, isFetching, error } = useSelector(state => state.todos);
-
+  const { tasks } = useSelector(state => state.todos);
 
   useEffect(() => {
-    if (token) {
-      dispatch(fetchTodos({ token, navigate }));
-    }
-  }, [dispatch, token, navigate]);
-
-  if (isFetching) {
-    return (
-      <div className="flex h-[400px] justify-center items-center">
-        <Loading />
-      </div>
-    );
-  }
+    dispatch(getTasks());
+  }, [dispatch]);
 
   return (
-    <>
+    <div className="container mx-auto p-4">
+      {/* Add Task Component */}
       <AddTask />
-      <div className="flex justify-center border-2 m-auto px-2 py-3 ">
-        {error ? (
-          <div className="text-red-700 p-4">{error.massage}</div>
-        ) : items?.length === 0 ? (
-          <div className="p-4">No task found</div>
+
+      {/* Task Container */}
+      <div className="flex justify-center rounded-lg m-auto p-4">
+        {tasks?.length === 0 ? (
+          <div className="p-5">
+            <div className="flex flex-col border-2 items-center text-gray-500 p-5 rounded-md">
+              <AiOutlineInbox size={50} className="mb-2 text-gray-400" />
+              <p className="text-lg font-semibold">You have no tasks yet!</p>
+              <p className="text-sm">Start by adding a new task to get organized.</p>
+            </div>
+          </div>
+          
         ) : (
           <TaskContener />
         )}
       </div>
-    </>
+    </div>
   );
 };
 

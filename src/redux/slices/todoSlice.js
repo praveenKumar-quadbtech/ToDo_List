@@ -1,102 +1,64 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { addTodo, deleteTodo, fetchTodos, updateTodo } from "../actions/task";
+import { createSlice, nanoid } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router";
 
-const todoSlice = createSlice({
-  name: "todos",
-  initialState: {
-    items: [],
-    isFetching: false,
-    isAdding: false,
-    isDeleting: false,
-    isUpdating: false,
-    error: null,
-    success: false,
-  },
-  extraReducers: (builder) => {
-    builder
-      // Fetch todos
-      .addCase(fetchTodos.pending, (state) => {
-        state.isFetching = true;
-        state.error = null;
-      })
-      .addCase(fetchTodos.fulfilled, (state, action) => {
-        state.isFetching = false;
-        state.items = action.payload?.yourTasks;
-      })
-      .addCase(fetchTodos.rejected, (state, action) => {
-        state.isFetching = false;
-        state.error = action.payload;
-      })
+const loadTasksFromStorage = () => {
+  return JSON.parse(localStorage.getItem("tasks")) || [];
+};
 
-      // Add todo
-      .addCase(addTodo.pending, (state) => {
-        state.isAdding = true;
-        state.error = null;
-      })
-      .addCase(addTodo.fulfilled, (state, action) => {
-        state.isAdding = false;
-        state.error = null;
-        state.success = true;
+// Save tasks to localStorage
+const saveTasksToStorage = (tasks) => {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+};
 
-        const newTaks = action.payload.newTaks;
-        state.items = [...state.items , newTaks]
-        toast.success("Task is Added!");
-      })
-      .addCase(addTodo.rejected, (state, action) => {
-        state.isAdding = false;
-        state.error = action.payload?.message || "Error while adding task.";
-        toast.error("Error while adding task.");
-      })
+const initialState = {
+  tasks: loadTasksFromStorage(),
+};
 
-      // Delete todo
-      .addCase(deleteTodo.pending, (state) => {
-        state.isDeleting = true;
-        state.error = null;
-      })
-      .addCase(deleteTodo.fulfilled, (state, action) => {
-        state.isDeleting = false;
-        state.error = null;
-
-        const removedTask = action.payload.removedTask;
-        state.items = state.items.filter(task =>
-          task._id !== removedTask._id 
-        );
-
-        toast.success(
-          action.payload?.message || "Task is Deleted Successfully!"
-        );
-      })
-      .addCase(deleteTodo.rejected, (state, action) => {
-        state.isDeleting = false;
-        state.error = action.payload?.message || "Error while deleting task.";
-        toast.error("Error while deleting task.");
-      })
-
-      // Update todo
-      .addCase(updateTodo.pending, (state) => {
-        state.isUpdating = true;
-        state.error = null;
-      })
-      .addCase(updateTodo.fulfilled, (state, action) => {
-        state.isUpdating = false;
-        state.error = null;
-        state.success = true;
-
-         const updatedTask = action.payload.updatedTask; 
-         state.items = state.items.map((task) =>
-           task._id === updatedTask._id ? updatedTask : task
-         );
-
-        toast.success( "Task is Updated!");
-      })
-      .addCase(updateTodo.rejected, (state, action) => {
-        state.isUpdating = false;
-        state.error = action.payload?.message || "Error while updating task.";
-        toast.error("Error while updating task.");
+const taskSlice = createSlice({
+  name: "tasks",
+  initialState,
+  reducers: {
+    // Create Task
+    addTask: (state, { payload }) => {
+      const currentDate = new Date().toISOString().split("T")[0];
+      state.tasks.push({
+        id: nanoid(),
+        ...payload,
+        progress: "pending", // "pending" ,"inprogress", "completed"
+        priority: "low", // "low", "medium" , "high"
+        createdAt: Date.now(),
+        deadline: currentDate,
       });
+      saveTasksToStorage(state.tasks);
+      toast.success("Task added successfully!");
+    },
+
+    // Update Task
+    updateTask: (state, { payload }) => {
+      console.log(payload);
+      
+      state.tasks = state.tasks.map((task) => {
+        if (task.id === payload.id) {
+          return {...task, ...payload.data}
+        }
+        return task
+      });
+      saveTasksToStorage(state.tasks);
+      toast.success("Task updated successfully!");
+    },
+
+    // Delete Task
+    deleteTask: (state, { payload }) => {
+      state.tasks = state.tasks.filter((task) => task.id !== payload.id);
+      saveTasksToStorage(state.tasks);
+      toast.info("Task deleted!");
+    },
+
+    getTasks: (state) => {
+      state.tasks = loadTasksFromStorage();
+    },
   },
 });
 
-export default todoSlice.reducer;
+export const { addTask, updateTask, deleteTask, getTasks } = taskSlice.actions;
+export default taskSlice.reducer;

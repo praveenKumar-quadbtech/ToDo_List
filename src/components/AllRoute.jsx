@@ -9,6 +9,7 @@ import { TodayTask } from '../pagas/TodayTask'
 import { ImportentTask } from '../pagas/ImportentTask'
 import { PlanedTask } from '../pagas/PlanedTask'
 import { AssignedTask } from '../pagas/AssignedTask'
+import { PendingTask } from '../pagas/PendingTask'
 
 export const AllRoute = () => {
   return (
@@ -30,10 +31,18 @@ export const AllRoute = () => {
         }
       />
       <Route
-        path="/in-complete"
+        path="/today"
         element={
           <PrivateRoute>
             <TodayTask />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/in-complete"
+        element={
+          <PrivateRoute>
+            <PendingTask />
           </PrivateRoute>
         }
       />

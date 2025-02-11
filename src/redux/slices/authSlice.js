@@ -1,84 +1,86 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-// actions
-import { loginUser, registerUser } from "../actions/user";
 import { toast } from "react-toastify";
 
 const initialState = {
-  user: JSON.parse(localStorage.getItem("user")) || null,
-  token: localStorage.getItem("token") || null,
-  isLogged: localStorage.getItem("isLogged") || null,
+  user: JSON.parse(localStorage.getItem("currentUser")) || null, 
+  isLogged: JSON.parse(localStorage.getItem("isLogged")) ?? false,
   loading: false,
   error: null,
-  success: false,
+  success : false
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout(state) {
-      state.user = null;
-      state.token = null;
-      state.isLogged = false;
+    register: (state, { payload }) => {
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      // Check if the user already exists
+      const userExists = users.find(
+        (user) => user.email === payload.email
+      );
+      if (userExists) {
+        toast.error("User already registered!");
+        return;
+      }
+
+      // Add new user to users array
+      users.push(payload);
+      localStorage.setItem("users", JSON.stringify(users));
+      state.success = true;
+
+      // Log in the user automatically after registration
+      // state.user = payload.user;
+      // state.isLogged = true;
+      // localStorage.setItem("currentUser", JSON.stringify(payload.user));
+      // localStorage.setItem("isLogged", JSON.stringify(true));
+
+      toast.success("Registration successful!");
     },
+
+    login: (state, { payload }) => {
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      // Check if user exists
+      const existingUser = users.find(
+        (user) =>
+          user.email === payload.email && user.password === payload.password
+      );
+
+      if (existingUser) {
+        // Set the logged-in user
+        state.user = { name: existingUser?.name, email: existingUser?.email };
+        state.isLogged = true;
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify({
+            name: existingUser?.name,
+            email: existingUser?.email,
+          })
+        );
+        localStorage.setItem("isLogged", JSON.stringify(true));
+
+        toast.success("Login successful!");
+      } else {
+        toast.error("Invalid email or password!");
+      }
+    },
+
+    logout: (state) => {
+      state.user = null;
+      state.isLogged = false;
+      localStorage.removeItem("currentUser");
+      localStorage.removeItem("isLogged");
+
+      toast.info("Logged out successfully!");
+    },
+
     clearState: (state) => {
-      (state.user = null),
-        (state.error = null),
-        (state.token = null),
-        (state.isLogged = false);
       state.success = false;
     },
   },
-  extraReducers: (builder) => {
-    builder
-      // Registration cases
-      .addCase(registerUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-        state.success = null;
-      })
-      .addCase(registerUser.fulfilled, (state, { payload }) => {
-        state.loading = false;
-        state.success = true;
-        toast.success(
-          payload.massage || "Registration successful. Please log in."
-        );
-      })
-      .addCase(registerUser.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.error = payload?.massage || "Registration Failed";
-        toast.error("Registration failed. Please try again.");
-      })
-
-      //   loginUser cases
-      .addCase(loginUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(loginUser.fulfilled, (state, { payload }) => {
-        state.loading = false;
-        state.user = { name: payload.name, userId: payload.userId };
-        state.token = payload.accessToken;
-        state.isLogged = true;
-        toast.success(payload.massage || "login success.");
-
-        // Save to localStorage
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ name: payload.name, userId: payload.userId })
-        );
-        localStorage.setItem("token", payload.accessToken);
-        localStorage.setItem("isLogged", true);
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error =
-          action.payload?.message || "Login failed. Please try again.";
-        toast.error("Login failed. Please try again.");
-      });
-  },
 });
 
-export const { logout , clearState } = authSlice.actions;
+export const { register, login, logout, clearState } = authSlice.actions;
 export default authSlice.reducer;

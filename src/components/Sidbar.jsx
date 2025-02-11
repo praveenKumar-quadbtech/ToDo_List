@@ -1,8 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 import UserProfileIcon from "../utils/UserProfileIcon";
 import { IoIosArrowDropdownCircle, IoIosArrowDropupCircle } from "react-icons/io";
+import { IoTodayOutline } from "react-icons/io5";
+import { FaRegStar } from "react-icons/fa6";
+import { MdPendingActions, MdAssignmentInd, MdOutlineAssignment, MdOutlineHome } from "react-icons/md";
+import { TbBook } from "react-icons/tb";
+
+// import { BsFillInfoCircleFill } from "react-icons/bs";
 import { logout } from "../redux/slices/authSlice";
 
 const Menu = (props) => {
@@ -53,32 +59,37 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
         {
             path: '/',
             name: 'Home',
-            icon: ""
+            icon: <MdOutlineHome />
         },
         {
             path: '/all-tasks',
             name: 'All Tasks',
-            icon: ""
+            icon: <MdOutlineAssignment />
         },
         {
-            path: '/in-complete',
-            name: 'In-Complete',
-            icon: ""
+            path: '/today',
+            name: 'today',
+            icon: <IoTodayOutline />
         },
         {
             path: '/important',
             name: 'Important',
-            icon: ""
+            icon: <FaRegStar />
+        },
+        {
+            path: '/in-complete',
+            name: 'In-Complete',
+            icon: <MdPendingActions />
         },
         {
             path: '/planed',
             name: 'Planed',
-            icon: ""
+            icon: <TbBook />
         },
         {
             path: '/assigned-to-me',
             name: 'Assigned to me',
-            icon: ""
+            icon: <MdAssignmentInd />
         }
     ]
 
@@ -110,10 +121,10 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
 
     return (<>
         {/* md and below screen sidebar */}
-        <div className="hidden md:flex flex-col h-full bg-green-50 px-4 border-r-2 gap-2 ">
-            <div className='mt-2 p-2 rounded-md bg-white shadow-lg '>
+        <div className="hidden md:flex flex-col h-full dark:bg-[#2C2C2C] dark:border-0 bg-green-50 px-4 border-r-2 gap-2 ">
+            <div className='mt-2 p-2 m-2 mx-4 rounded-md bg-white shadow-lg dark:bg-[#232323] dark:text-white'>
                 {user ?
-                    <div className="w-full px-2 flex flex-col bg-white">
+                    <div className="w-full px-2 flex flex-col dark:bg-[#232323] dark:text-white bg-white">
                         <div className="flex justify-between items-center">
                             <span className="p-2"><UserProfileIcon user={user} /></span>
                             <span onClick={() => setisActive(!isActive)} className="cursor-pointer">
@@ -130,14 +141,14 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                     </div>
                 }
             </div>
-            <div className="flex flex-col justify-between h-full overflow-auto ">
-                <div className="">
-                    <ul className="text-sm font-medium flex-1 bg-white py-3 mt-1 shadow-md rounded-sm">
+            <div className="flex flex-col justify-between h-full overflow-auto px-2">
+                <div className="px-3">
+                    <ul className="text-sm font-medium flex-1 bg-white mt-1 shadow-md rounded-md  dark:bg-[#232323] dark:text-white">
                         {
                             navigation.map((item, idx) => (
                                 <li key={idx} >
-                                    <Link to={item.path} className="flex items-center gap-x-2 text-gray-600 p-2 rounded-lg  hover:bg-green-50 active:bg-gray-100 duration-150">
-                                        <div className="text-gray-500">{item.icon}</div>
+                                    <Link to={item.path} className="flex items-center gap-x-2 text-gray-600 dark:text-white p-2  hover:bg-green-50 active:bg-gray-100 dark:hover:bg-[#2F3630] dark:hover:text-[#357937] duration-150">
+                                        <div className="text-gray-500 dark:text-white">{item.icon}</div>
                                         {item.name}
                                     </Link>
                                 </li>
@@ -145,13 +156,21 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                         }
 
                     </ul>
-                    <button className="px-5 py-7 text-start w-full mt-3 bg-white shadow-md rounded-md">Add list</button>
+                    
+                    <button className="dark:bg-[#232323] dark:text-white py-3 pl-3 text-start w-full mt-3 bg-white shadow-md rounded-md">+ Add list</button>
+                    <div className="flex justify-between px-3">
+                        <span>
+                            <h4>Today Tasks</h4>
+                            <h3>{todayTask}</h3>
+                        </span>
+                        {/* <BsFillInfoCircleFill /> */}
+                    </div>
+                    <div className="bg-white mt-2 px-3 shadow-md rounded-md dark:bg-[#232323] dark:text-white">
+                       
+                    </div>
                 </div>
-                <div className="bg-white px-3 py-3 mt-1 shadow-md rounded-md">
-                    <h4>Today Tasks</h4>
-                    <h3>{todayTask}</h3>
-                </div>
-                <div className="pt-2 mt-2 border-t bg-white shadow-md rounded-md">
+                
+                {/* <div className="pt-2 mt-2 border-t bg-white shadow-md rounded-md">
                     <ul className="text-sm font-medium">
                         {
                             navsFooter.map((item, idx) => (
@@ -164,7 +183,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                             ))
                         }
                     </ul>
-                </div>
+                </div> */}
             </div >
         </div>
 

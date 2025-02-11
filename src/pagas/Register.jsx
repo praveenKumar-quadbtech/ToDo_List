@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../redux/actions/user";
 import { Link, useNavigate } from "react-router";
 import LoadingButton from "../utils/LodingButton";
-import { clearState } from "../redux/slices/authSlice";
+import { clearState, register } from "../redux/slices/authSlice";
 
 export const Register = () => {
   const [name, setName] = useState("");
@@ -12,13 +11,12 @@ export const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const { success, error, loading} = useSelector(state => state.auth)
-console.log(success);
 
   const handleRegister = (e) => {
     e.preventDefault();
     
     // Dispatch the registration action
-    dispatch(registerUser({ name, email, password }));
+    dispatch(register({ name, email, password }));
   };
 
   useEffect(()=>{
@@ -27,7 +25,7 @@ console.log(success);
       setName("")
       setPassword("")
       navigate("/login")
-      dispatch(clearState())
+      // dispatch(clearState())
     }
   },[success])
   return (
@@ -54,22 +52,6 @@ console.log(success);
                       Full Name
                     </label>
                     <div className="mt-2.5 relative text-gray-400 focus-within:text-gray-600">
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg
-                          className="w-5 h-5"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                          />
-                        </svg>
-                      </div>
                       <input
                         onChange={(e) => setName(e.target.value)}
                         required

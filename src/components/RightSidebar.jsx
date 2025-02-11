@@ -6,6 +6,7 @@ import { IoMdAdd } from 'react-icons/io';
 import { FaRegBell, FaRegStar, FaStar } from 'react-icons/fa';
 import { CiCalendar } from 'react-icons/ci';
 import { deleteTodo, updateTodo } from '../redux/actions/task';
+import DueDatePicker from '../utils/DatePeaker';
 
 export const RightSidebar = () => {
     const { isOpen, data } = useSelector(state => state.sidebar)
@@ -47,14 +48,15 @@ export const RightSidebar = () => {
                 {/* Task card */}
                 <div className="flex gap-2 items-center justify-between px-2 py-3 border-b-2">
                     <span className='flex gap-3 items-center'>
-                    <input
-                        type="checkbox"
-                        checked={data.progress === "completed"}
-                        onChange={handleStatus}
-                        className="cursor-pointer"
-                        aria-label="Toggle Task Status"
-                    />
-                    <h3 className="text-md font-bold text-gray-800">{data?.title}</h3>
+                        <input
+                            type="checkbox"
+                            checked={data?.progress === "completed"}
+                            onChange={handleStatus}
+                            className="cursor-pointer"
+                            aria-label="Toggle Task Status"
+                        />
+                        {/* <h3 className="text-md font-bold text-gray-800"></h3> */}
+                        <input type="text" value={data?.title} />
                     </span>
                     {/* Change Priority Button */}
                     <button onClick={handlePriorityChange} aria-label="Change Priority">
@@ -71,13 +73,17 @@ export const RightSidebar = () => {
                     <FaRegBell className='size-4' />
                     Set Reminder
                 </button>
-                <button className='flex gap-2 items-center px-2 py-2 border-b-2'>
-                    <CiCalendar
-                        className='size-4 font-bold'
-                    // onClick={() => setTaskData({ ...taskData, deadline: "" })}
-                    />
-                    Add Due Date
-                </button>
+                {/* <button className='flex flex-col gap-2 px-2 py-2 border-b-2'>
+                    <span className='flex gap-2 items-center'>
+                        <CiCalendar
+                            className='size-4 font-bold'
+                        // onClick={() => setTaskData({ ...taskData, deadline: "" })}
+                        />
+                        Add Due Date
+                    </span>
+                    <input type="date" />
+                </button> */}
+                <DueDatePicker/>
                 <button className='flex gap-2 items-center px-2 py-2 border-b-2'>
                     <IoRepeatOutline className='size-4 font-bold' />
                     Repeat
