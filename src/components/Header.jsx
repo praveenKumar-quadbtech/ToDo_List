@@ -25,7 +25,7 @@ const dispatch = useDispatch()
     }, [isSearch])
 
     return (
-        <header className='dark:bg-[#242424] dark:text-white bg-gray-100 border-b dark:border-0 border-gray-200 flex justify-between items-center px-2 md:px-6 py-1 h-[50px]'>
+        <header className='dark:bg-[#242424] dark:text-white bg-[#FBFDFC] flex justify-between items-center'>
             <div className="flex gap-1 md:gap-4 items-center">
                 <span onClick={togleSidebar} className="cursor-pointer">
                     {isSidebarOpen ? <IoCloseSharp className="size-3 md:size-7 hover:border-2 rounded-sm" />

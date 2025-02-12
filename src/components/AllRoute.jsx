@@ -14,18 +14,16 @@ import { PendingTask } from '../pagas/PendingTask'
 export const AllRoute = () => {
   return (
     <Routes>
-      <Route
+      {/* <Route
         path="/"
         element={
             <Home />
         }
-      />
+      /> */}
       <Route
-        path="/all-tasks"
+        path="/"
         element={
-          <PrivateRoute>
             <TaskList />
-          </PrivateRoute>
         }
       />
       <Route
@@ -36,14 +34,7 @@ export const AllRoute = () => {
           </PrivateRoute>
         }
       />
-      <Route
-        path="/in-complete"
-        element={
-          <PrivateRoute>
-            <PendingTask />
-          </PrivateRoute>
-        }
-      />
+     
       <Route
         path="/important"
         element={
@@ -54,7 +45,7 @@ export const AllRoute = () => {
       />
 
       <Route
-        path="/planed"
+        path="/planned"
         element={
           <PrivateRoute>
             <PlanedTask />
@@ -63,7 +54,7 @@ export const AllRoute = () => {
       />
 
       <Route
-        path="/assigned-to-me"
+        path="/assigned"
         element={
           <PrivateRoute>
             <AssignedTask />
