@@ -3,17 +3,14 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useLocation } from "react-router";
 import UserProfileIcon from "../utils/UserProfileIcon";
-import { IoIosArrowDropdownCircle, IoIosArrowDropupCircle } from "react-icons/io";
 import { IoTodayOutline } from "react-icons/io5";
 import { FaRegStar } from "react-icons/fa6";
-import { MdPendingActions, MdAssignmentInd, MdOutlineAssignment, MdOutlineHome } from "react-icons/md";
+import { MdAssignmentInd, MdOutlineAssignment} from "react-icons/md";
 import { TbBook } from "react-icons/tb";
 
-// import { BsFillInfoCircleFill } from "react-icons/bs";
 import { logout } from "../redux/slices/authSlice";
 import { BiInfoCircle, BiPlus } from "react-icons/bi";
-import DoughnutChart from "../utils/PiChart";
-import PrograssChart  from "../utils/PrograssChart";
+import PrograssChart from "../utils/PrograssChart";
 
 const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
     const { user } = useSelector(state => state?.auth)
@@ -81,7 +78,6 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                     <button onClick={handelLogout} className="py-[2px] shadow-sm bg-[#FBFDFC] w-[70%] hover:text-green-400">Logout</button>
                 </div>
                 {/* links */}
-
                 <div className=" bg-[#FBFDFC] dark:bg-[#232323] dark:text-white shadow-md rounded-md flex items-center h-[43%]">
                     <ul className="text-sm font-medium flex-1">
                         {navigation.map((item, idx) => (
@@ -111,21 +107,21 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 </div>
 
                 <button className="bg-[#FBFDFC] dark:bg-[#232323] dark:text-white shadow-md rounded-md flex gap-2 mt-1 py-3 px-3 items-center h-[10%]">
-                    <BiPlus size={20}/>
-                  Add List
+                    <BiPlus size={20} />
+                    Add List
                 </button>
 
+                {/* Prograss Chart */}
                 <div className="w-full bg-[#FBFDFC] dark:bg-[#232323] dark:text-white shadow-md rounded-md mt-1 px-3 py-1 h-[25%]">
                     <div className="flex justify-between h-[30%]">
                         <span>
                             <p className="text-[10px]">Today Tasks</p>
                             <h3>{todayTask}</h3>
                         </span>
-                        <BiInfoCircle/>
+                        <BiInfoCircle />
                     </div>
-                    <div className="h-12 h-[70%]">
-                        {/* <DoughnutChart tasksData= {tasks}/> */}
-                        <PrograssChart data = {tasks}/>
+                    <div className="h-[70%]">
+                        <PrograssChart data={tasks} />
                     </div>
                 </div>
             </div>

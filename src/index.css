@@ -3,6 +3,23 @@
 @tailwind utilities;
 
 
-*{
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  font-family: "Outfit", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.scrollable-container {
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+}
+.scrollable-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }

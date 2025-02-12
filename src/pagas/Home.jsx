@@ -1,38 +1,39 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTasks } from "../redux/slices/todoSlice";
 import { AddTask } from "../components/AddTask";
-import { TaskContener } from "../components/TaskContener";
+import { TaskContainer } from "../components/TaskContener";
 import { AiOutlineInbox } from "react-icons/ai"; // Import an icon
+import { useNavigate } from "react-router";
 
 const Home = () => {
   const dispatch = useDispatch();
   const { tasks } = useSelector(state => state.todos);
+  const [addNew, setAddNew] = useState(false)
+  const { isLogged } = useSelector(state => state.auth);
+  const navigate = useNavigate()
+
+  const toggleTaskForm = (status) => {
+    if (isLogged) {
+      setAddNew(status)
+    }
+    else {
+      navigate("/login")
+    }
+  }
 
   useEffect(() => {
     dispatch(getTasks());
   }, [dispatch]);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="w-full dark:bg-[#232323]" >
+      <h3 className="py-1 border-t-[1px] dark:border-0 dark:text-white">ToDo</h3>
       {/* Add Task Component */}
-      <AddTask />
+      <AddTask addNew={addNew} toggleTaskForm={toggleTaskForm}/>
 
       {/* Task Container */}
-      <div className="flex justify-center rounded-lg m-auto p-4">
-        {tasks?.length === 0 ? (
-          <div className="p-5">
-            <div className="flex flex-col border-2 items-center text-gray-500 p-5 rounded-md">
-              <AiOutlineInbox size={50} className="mb-2 text-gray-400" />
-              <p className="text-lg font-semibold">You have no tasks yet!</p>
-              <p className="text-sm">Start by adding a new task to get organized.</p>
-            </div>
-          </div>
-          
-        ) : (
-          <TaskContener />
-        )}
-      </div>
+      <TaskContainer toggleTaskForm={toggleTaskForm} />
     </div>
   );
 };

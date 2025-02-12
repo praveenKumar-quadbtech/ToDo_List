@@ -1,23 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CiCalendar } from 'react-icons/ci';
 import { FaRegBell } from 'react-icons/fa';
 import { IoRepeatOutline } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
-import LoadingButton from './../utils/LodingButton';
 import { addTask } from '../redux/slices/todoSlice';
-import { onOpen } from '../redux/slices/sideBarSlice';
-import { useNavigate } from 'react-router';
+import { clearFormData, onAdd, onClose, setFormData} from '../redux/slices/sideBarSlice';
 
-export const AddTask = () => {
+export const AddTask = ({ addNew, toggleTaskForm }) => {
     const dispatch = useDispatch();
-    const navigate = useNavigate()
-    const { isLogged } = useSelector(state => state.auth);
-    const [addNew, setAddNew] = useState(false)
-    const [taskData, setTaskData] = useState({
-        title: "",
-        deadline: "",
-    });
-
+    const inputRef = useRef(null)
+    const {formData} = useSelector(state=>state.sidebar)
     const [error, setError] = useState("");
 
     // Clear form on successful task addition
@@ -32,47 +24,38 @@ export const AddTask = () => {
     //         setAddNew(false)
     //     }
     // }, [success]);
-
     const handleAdd = () => {
-        if (taskData.title !== ""){
+        if (formData.title !== ""){
             setError("");
-            dispatch(addTask(taskData));
-            setTaskData({
-                title: "",
-                deadline: "",
-            })
-            setAddNew(false)
+            dispatch(addTask(formData));
+            toggleTaskForm(false)
+            dispatch(clearFormData())
         }
           else{
             setError("title is require");
           } 
     };
 
-    const openTaskForm = ()=>{
-        if(isLogged){
-            setAddNew(true)
-        }
-        else{
-            navigate("/login")
-        }
-    }
+useEffect(()=>{
+    inputRef.current.focus()
+}, [addNew])   
 
     return (<>
-        <div className={`${!addNew ? "flex" : "hidden"} bg-green-50 dark:bg-[#2F3630] flex justify-end px-5 py-2`} >
-            <button className="bg-[#357937E0] rounded-md px-3 py-1 font-bold text-white" onClick={openTaskForm}>Add New</button>
+        <div className={`${!addNew ? "flex" : "hidden"} bg-green-50 dark:bg-[#2F3630] flex justify-end px-5 py-2 rounded-sm`} >
+            <button className="bg-[#357937E0] rounded-md px-3 py-1 font-bold text-white" onClick={() => toggleTaskForm(true)}>Add New</button>
         </div>
 
-        <div className={`${addNew ? "flex" : "hidden"}  w-full dark:bg-[#2F3630] dark:text-white flex-col justify-center items-center gap-2 px-5 text-gray-900 bg-green-100`}>
-            <h3 className="text-xl font-semibold">Add To Do</h3>
+        <div className={`${addNew ? "flex" : "hidden"} rounded-sm w-full dark:bg-[#2F3630] py-1 dark:text-white flex-col gap-2 px-5 text-gray-900 bg-green-50`}>
             {/* Task Title */}
-            <div className='flex flex-col w-full md:w-1/2 m-auto cursor-pointer'>
+            <div className='flex flex-col max-w-md'>
                 <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Task Title</label>
                 <input
+                ref={inputRef}
                     id="title"
                     type="text"
-                    value={taskData.title}
-                    onChange={(e) => setTaskData({ ...taskData, title: e.target.value })}
-                    className="bg-gray-50 cursor-pointer border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    value={formData.title}
+                    onChange={(e) => dispatch(setFormData({ ...formData, title: e.target.value }))}
+                    className="dark:bg-[#242424] dark:text-white border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                     placeholder="Enter task title"
                     required
                 />
@@ -82,14 +65,14 @@ export const AddTask = () => {
             {error && <p className='text-red-700 pt-1 pb-2'>{error}</p>}
 
             {/* Action Buttons */}
-            <div className='w-full md:w-1/2 flex justify-between px-6 items-center pb-5'>
+            <div className='w-full flex justify-between px-6 items-center pb-5'>
                 <div className='flex items-center gap-3'>
-                    <FaRegBell onClick={()=>dispatch(onOpen(taskData))} className='size-5 hover:scale-125 active:scale-110 cursor-pointer' />
-                    <IoRepeatOutline onClick={() => dispatch(onOpen(taskData))} className='size-6 hover:scale-125 active:scale-125 cursor-pointer' />
+                    <FaRegBell onClick={()=>dispatch(onAdd())} className='size-5 hover:scale-125 active:scale-110 cursor-pointer' />
+                    <IoRepeatOutline onClick={() => dispatch(onAdd())} className='size-6 hover:scale-125 active:scale-125 cursor-pointer' />
                     <CiCalendar
                         className='size-6 hover:scale-125 cursor-pointer active:scale-125'
                         // onClick={() => setTaskData({ ...taskData, deadline: "" })}
-                        onClick={() => dispatch(onOpen(taskData))}
+                        onClick={() => dispatch(onAdd())}
                     />
                 </div>
                 {/* <LoadingButton

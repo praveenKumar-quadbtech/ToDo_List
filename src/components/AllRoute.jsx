@@ -14,18 +14,18 @@ import { PendingTask } from '../pagas/PendingTask'
 export const AllRoute = () => {
   return (
     <Routes>
-      {/* <Route
+      <Route
         path="/"
         element={
             <Home />
         }
-      /> */}
-      <Route
+      />
+      {/* <Route
         path="/"
         element={
             <TaskList />
         }
-      />
+      /> */}
       <Route
         path="/today"
         element={

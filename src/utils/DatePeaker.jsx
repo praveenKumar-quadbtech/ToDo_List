@@ -1,29 +1,34 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { CiCalendar } from "react-icons/ci";
+import { useDispatch, useSelector } from "react-redux";
+import { setFormData } from "../redux/slices/sideBarSlice";
 
 const DueDatePicker = () => {
     const [dueDate, setDueDate] = useState("");
     const [showDatePicker, setShowDatePicker] = useState(false);
     const dateInputRef = useRef(null);
+    const { formData } = useSelector(state => state.sidebar)
+    const dispatch = useDispatch()
 
     const handleButtonClick = () => {
-        setShowDatePicker(true); // Show the date picker container
+        setShowDatePicker(true);
         setTimeout(() => {
             if (dateInputRef.current) {
-                dateInputRef.current.showPicker(); // Open the calendar immediately
+                dateInputRef.current.showPicker();
             }
-        }, 100); // Delay slightly to ensure visibility
+        }, 100);
     };
 
+    
     return (
         <div className="relative">
             {/* Button to trigger the date picker */}
             <button
-                className="flex gap-2 items-center px-2 py-2 border-b-2 w-full"
+                className="flex gap-2 items-center px-2 py-2 border-b-[0.5px] border-green-100 w-full"
                 onClick={handleButtonClick}
             >
                 <CiCalendar className="size-4 font-bold" />
-                {dueDate ? dueDate : "Add Due Date"}
+                {formData.deadline ? formData.deadline : "Add Due Date"}
             </button>
 
             {/* Date Input positioned inside the sidebar */}
@@ -32,10 +37,10 @@ const DueDatePicker = () => {
                     <input
                         type="date"
                         ref={dateInputRef}
-                        value={dueDate}
+                        value={formData.deadline}
                         onChange={(e) => {
-                            setDueDate(e.target.value);
-                            setShowDatePicker(false); // Hide picker after selection
+                            dispatch(setFormData({ ...formData, deadline: e.target.value }));
+                            setShowDatePicker(false); 
                         }}
                         className="p-2 border rounded-md"
                     />

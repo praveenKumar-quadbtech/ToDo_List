@@ -23,11 +23,14 @@ const taskSlice = createSlice({
       const currentDate = new Date().toISOString().split("T")[0];
       state.tasks.push({
         id: nanoid(),
-        ...payload,
+        title: payload.title,
         progress: "pending", // "pending" ,"inprogress", "completed"
-        priority: "low", // "low", "medium" , "high"
+        priority: payload.priority ?? "low", // "low", "medium" , "high"
         createdAt: Date.now(),
-        deadline: currentDate,
+        deadline: payload.deadline ?? "No deadline",
+        steps: payload.steps ?? [],
+        reminder: payload.reminder ?? [], // data with time
+        repeat: payload.repeat ?? "",
       });
       saveTasksToStorage(state.tasks);
       toast.success("Task added successfully!");

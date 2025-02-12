@@ -1,22 +1,38 @@
 import { IoCloseSharp, IoRepeatOutline } from 'react-icons/io5'
 import { MdDeleteForever } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
-import { onClose } from '../redux/slices/sideBarSlice';
+import { onClose, setFormData } from '../redux/slices/sideBarSlice';
 import { IoMdAdd } from 'react-icons/io';
 import { FaRegBell, FaRegStar, FaStar } from 'react-icons/fa';
 import { CiCalendar } from 'react-icons/ci';
 import { deleteTodo, updateTodo } from '../redux/actions/task';
 import DueDatePicker from '../utils/DatePeaker';
+import { useState } from 'react';
+import { AddStaps } from '../utils/AddStaps';
+import { deleteTask } from '../redux/slices/todoSlice';
 
 export const RightSidebar = () => {
-    const { isOpen, data } = useSelector(state => state.sidebar)
-    const { token } = useSelector((state) => state.auth);
+    const [stepsCount, setStepsCount] = useState(0)
+    const [step, setStep] = useState("")
+    const { formData} = useSelector(state => state.sidebar)
+    
+
     const dispatch = useDispatch()
 
+    const stepsArray = Array(stepsCount).fill(step);
+
     const handleDelete = () => {
-        dispatch(deleteTodo({ token, id: data._id }));
+        dispatch(deleteTask({ id: data._id }));
         dispatch(onClose());
     };
+
+    const hendelStepsChange = (value) => {
+        setStep(value)
+    }
+
+    const removeStep = () => {
+        setStepsCount(stepsCount - 1)
+    }
 
     const handleStatus = () => {
         const newProgress = data?.progress === "pending" ? "completed" : "pending";
@@ -43,37 +59,25 @@ export const RightSidebar = () => {
     };
 
     return (
-        <div className={`bg-green-50 h-[calc(100vh-100px)] w-[300px] border-2 fixed right-0 transition-all duration-300 ease-in-out ${isOpen ? "right-0" : "right-[-300px]"} flex flex-col justify-between overflow-y-auto px-2`} >
+        <div className={`bg-green-50 h-full dark:bg-[#232323] dark:text-white transition-all duration-300 ease-in-out flex flex-col justify-between overflow-y-auto p-2`} >
             <div className='flex flex-col gap-3'>
-                {/* Task card */}
-                <div className="flex gap-2 items-center justify-between px-2 py-3 border-b-2">
-                    <span className='flex gap-3 items-center'>
-                        <input
-                            type="checkbox"
-                            checked={data?.progress === "completed"}
-                            onChange={handleStatus}
-                            className="cursor-pointer"
-                            aria-label="Toggle Task Status"
-                        />
-                        {/* <h3 className="text-md font-bold text-gray-800"></h3> */}
-                        <input type="text" value={data?.title} />
-                    </span>
-                    {/* Change Priority Button */}
-                    <button onClick={handlePriorityChange} aria-label="Change Priority">
-                        {data?.priority === "low" || data?.priority === "medium" ? (
-                            <FaRegStar className="text-2xl text-yellow-500 hover:text-yellow-600" />
-                        ) : (
-                            <FaStar className="text-2xl text-yellow-600 hover:text-yellow-700" />
-                        )}
-                    </button>
-                </div>
 
-                <button className='flex gap-2 items-center px-2 py-2 border-b-2'><IoMdAdd /> Add Step</button>
-                <button className='flex gap-2 items-center px-2 py-2 border-b-2'>
+                {/* <h3 className="text-md font-bold text-gray-800"></h3> */}
+                <input 
+                className='px-3 dark:bg-[#2c2c2c] dark:text-white py-1 border-y-[0.5px]  border-green-100 outline-none' 
+                type="text" 
+                value={formData.title}
+                onChange={(e)=>{dispatch(setFormData({...formData, title : e.target.value}))}} 
+                />
+
+                {stepsArray.map(ele => (<AddStaps removeStep= {removeStep} step={step} hendelStepsChange={hendelStepsChange} />))}
+
+                <button onClick={() => setStepsCount(stepsCount + 1)} className='flex gap-2 items-center px-2 py-2 border-b-[0.5px] border-green-100'><IoMdAdd /> Add Step</button>
+                <button className='flex gap-2 items-center px-2 py-2 border-b-[0.5px] border-green-100'>
                     <FaRegBell className='size-4' />
                     Set Reminder
                 </button>
-                {/* <button className='flex flex-col gap-2 px-2 py-2 border-b-2'>
+                {/* <button className='flex flex-col gap-2 px-2 py-2 border-b-[0.5px] border-green-100'>
                     <span className='flex gap-2 items-center'>
                         <CiCalendar
                             className='size-4 font-bold'
@@ -83,8 +87,8 @@ export const RightSidebar = () => {
                     </span>
                     <input type="date" />
                 </button> */}
-                <DueDatePicker/>
-                <button className='flex gap-2 items-center px-2 py-2 border-b-2'>
+                <DueDatePicker />
+                <button className='flex gap-2 items-center px-2 py-2 border-b-[0.5px] border-green-100'>
                     <IoRepeatOutline className='size-4 font-bold' />
                     Repeat
                 </button>
@@ -97,7 +101,7 @@ export const RightSidebar = () => {
                     rows="2"
                 ></textarea>
             </div>
-            <div className='w-full flex justify-between px-2 py-3 items-center border-t-2'>
+            <div className='w-full flex justify-between px-2 py-3 items-center border-b-[0.5px] border-green-100'>
                 <IoCloseSharp onClick={() => dispatch(onClose())} className='cursor-pointer size-6' />
                 <p>Created Today</p>
                 <MdDeleteForever
