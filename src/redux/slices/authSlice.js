@@ -71,7 +71,7 @@ const authSlice = createSlice({
       state.user = null;
       state.isLogged = false;
       localStorage.removeItem("currentUser");
-      localStorage.removeItem("isLogged");
+      localStorage.setItem("isLogged", JSON.stringify(false));
 
       toast.info("Logged out successfully!");
     },

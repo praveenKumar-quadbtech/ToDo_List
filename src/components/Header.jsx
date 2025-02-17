@@ -50,12 +50,12 @@ export const Header = ({ togleSidebar, isSidebarOpen, toggleTheme, isDark }) => 
     }, [isSearch])
 
     return (
-        <header className='dark:bg-[#242424] dark:text-white bg-[#FBFDFC] flex justify-between items-center w-full'>
+        <header className=' dark:text-white flex justify-between items-center w-full'>
             <div className="flex gap-1 md:gap-4 items-center">
                 <span onClick={togleSidebar} className="cursor-pointer">
-                    {isSidebarOpen ? <IoCloseSharp className="size-3 md:size-7 hover:border-2 rounded-sm" />
+                    {isSidebarOpen ? <IoCloseSharp className="size-5 md:size-7 hover:border-2 rounded-sm" />
                         :
-                        <IoMenu className="size-3 md:size-7 hover:border-2 rounded-sm" />}
+                        <IoMenu className="size-5 md:size-7 hover:border-2 rounded-sm" />}
                 </span>
                 <span className='w-[50%] md:w-[70%]'>
                     <img className='w-full h-1/2' src={logo} alt="logo" />
@@ -77,10 +77,10 @@ export const Header = ({ togleSidebar, isSidebarOpen, toggleTheme, isDark }) => 
                     />
                 </div>
 
-                <div className="flex gap-2 md:gap-5 items-center">
+                <div className="flex gap-3 md:gap-5 items-center">
                     <IoIosSearch
                         onClick={() => setisSearch(!isSearch)}
-                        className="size-3 md:size-6 hover:scale-125 cursor-pointer"
+                        className="size-4 md:size-6 hover:scale-125 cursor-pointer"
                     />
 
                     <button onClick={() => {
@@ -99,35 +99,36 @@ export const Header = ({ togleSidebar, isSidebarOpen, toggleTheme, isDark }) => 
                     <button onClick={toggleTheme}>
                         {isDark ?
                             <CiLight
-                                className="size-3 md:size-6 hover:scale-125 cursor-pointer"
+                                className="size-5 md:size-6 hover:scale-125 cursor-pointer"
                             />
                             :
                             <MdOutlineDarkMode
-                                className="size-3 md:size-6 hover:scale-125 cursor-pointer"
+                                className="size-5 md:size-6 hover:scale-125 cursor-pointer"
                             />}
                     </button>
 
-                    {/* <div> */}
-                        <div className="flex md:hidden justify-center items-center p-2">
+                    <div className="flex md:hidden justify-center items-center p-2">
+                        {/* <img src="" alt="" /> */}
+                        {user ?
+                            <button onClick={() => setisActive(!isActive)}>
+                                <UserProfileIcon user={user} />
+                            </button>
+                            :
+                            <Link className="bg-[#357937E0] text-white font-bold px-3 py-1 rounded-md cursor-pointer" to={"/login"}>Login</Link>
+                        }
+                    </div>
+                    {/* user actions button */}
+                    <div className={`${isActive ? "md:hidden flex" : "hidden"} flex-col justify-center items-center z-10 shadow-sm rounded-md dark:shadow-white absolute right-0 top-12 bg-[#FBFDFC] dark:bg-[#232323] shadow-black`}>
+                        <button onClick={() => setisActive(false)} className="py-2 px-5 shadow-sm border-b-[1px] dark:border-green-100 hover:text-green-400">My Profile</button>
+                        <button onClick={()=>{
+                            handelLogout()
+                            setisActive(false)
+                        }} className="py-2 px-3 shadow-sm hover:text-green-400">Logout</button>
+                    </div>
 
-                            {/* <img src="" alt="" /> */}
-                            {user ?
-                                <button onClick={() => setisActive(!isActive)}>
-                                    <UserProfileIcon user={user} />
-                                </button>
-                                :
-                                <Link className="bg-[#357937E0] text-white font-bold px-3 py-1 rounded-md cursor-pointer" to={"/login"}>Login</Link>
-                            }
-                        </div>
-                        {/* user actions button */}
-                        {/* <div className={`${isActive ? "flex" : "invisible"} flex-col justify-center items-center z-10 pt-2 absolute`}>
-                            <button onClick={() => setisActive(!isActive)} className="py-[2px] shadow-sm bg-[#FBFDFC] border-b-[2px] w-[70%] hover:text-green-400">My Profile</button>
-                            <button onClick={handelLogout} className="py-[2px] shadow-sm bg-[#FBFDFC] w-[70%] hover:text-green-400">Logout</button>
-                        </div> */}
-                    {/* </div> */}
                 </div>
 
-               
+
             </div>
 
         </header>

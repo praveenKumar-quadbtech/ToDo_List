@@ -52,7 +52,7 @@ const Layout = () => {
 
     return (
         <div className={`w-full h-auto bg-[#f2f2f2] dark:bg-[#242424] transition-all`} >
-            <nav className="fixed top-0 left-6 right-6 md:left-12 md:right-12 z-50 h-14 bg-[#FBFDFC] dark:bg-[#242424] shadow-sm flex items-center">
+            <nav className="fixed top-0 border-b-2 dark:border-[#232323] dark:border-2 dark:sm:shadow-md left-0 right-0 px-6 md:px-0 md:left-12 md:right-12 h-14 bg-[#f2f2f2] dark:bg-[#242424] flex items-center z-50">
                 <Header isDark={isDark} isSidebarOpen={isLeftBar} togleSidebar={togleSidebar} toggleTheme={toggleTheme} />
             </nav>
 
