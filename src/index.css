@@ -23,3 +23,38 @@ body {
 .scrollable-container::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
 }
+
+
+
+/* Custom Datepicker Styles */
+/* Dark mode styles for react-datepicker */
+.custom-datepicker .react-datepicker {
+  background-color: #1f2937;
+  /* Dark gray */
+  border: 1px solid #374151;
+  /* Slightly lighter border */
+  color: #ffffff;
+  /* White text */
+}
+
+.custom-datepicker .react-datepicker__header {
+  background-color: #4ade80;
+  /* Even darker gray */
+  border-bottom: 1px solid #4ade80;
+}
+
+.custom-datepicker .react-datepicker__day {
+  color: #ffffff;
+}
+
+.custom-datepicker .react-datepicker__day:hover {
+  background-color: #4ade80;
+  /* Hover effect */
+  color: #ffffff;
+}
+
+.custom-datepicker .react-datepicker__day--selected {
+  background-color: #4ade80;
+  /* Green highlight */
+  color: #4ade80;
+}

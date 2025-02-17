@@ -1,69 +1,65 @@
-import React from 'react'
-import { Route, Routes } from 'react-router'
-import Home from '../pagas/Home'
-import { Login } from '../pagas/Login'
-import { Register } from '../pagas/Register'
-import PrivateRoute from './PrivateRoute'
-import { TaskList } from '../pagas/TaskList'
-import { TodayTask } from '../pagas/TodayTask'
-import { ImportentTask } from '../pagas/ImportentTask'
-import { PlanedTask } from '../pagas/PlanedTask'
-import { AssignedTask } from '../pagas/AssignedTask'
-import { PendingTask } from '../pagas/PendingTask'
+import React from "react";
+import { Route, Routes } from "react-router";
+import Home from "../pagas/Home";
+import { Login } from "../pagas/Login";
+import { Register } from "../pagas/Register";
+import PrivateRoute from "./PrivateRoute";
+import { TodayTask } from "../pagas/TodayTask";
+import { ImportentTask } from "../pagas/ImportentTask";
+import { PlanedTask } from "../pagas/PlanedTask";
+import { AssignedTask } from "../pagas/AssignedTask";
+import { PendingTask } from "../pagas/PendingTask";
 
-export const AllRoute = () => {
+// 🔹 Public Routes Array
+const publicRoutes = [
+  { path: "/", element: Home },
+  { path: "/login", element: Login },
+  { path: "/register", element: Register },
+];
+
+// 🔹 Private Routes Array
+const privateRoutes = [
+  { path: "/today", element: TodayTask },
+  { path: "/important", element: ImportentTask },
+  { path: "/planned", element: PlanedTask },
+  { path: "/assigned", element: AssignedTask },
+  { path: "/pending", element: PendingTask },
+];
+
+export const AllRoute = ({ isRightBar, toggleRightBar, isLeftBar }) => {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-            <Home />
-        }
-      />
-      {/* <Route
-        path="/"
-        element={
-            <TaskList />
-        }
-      /> */}
-      <Route
-        path="/today"
-        element={
-          <PrivateRoute>
-            <TodayTask />
-          </PrivateRoute>
-        }
-      />
-     
-      <Route
-        path="/important"
-        element={
-          <PrivateRoute>
-            <ImportentTask />
-          </PrivateRoute>
-        }
-      />
+      {/* 🔹 Public Routes */}
+      {publicRoutes.map(({ path, element: Component }) => (
+        <Route
+          key={path}
+          path={path}
+          element={
+            path === "/" ? (
+              <Home
+                isRightBar={isRightBar}
+                toggleRightBar={toggleRightBar}
+                isLeftBar={isLeftBar}
+              />
+            ) : (
+              <Component />
+            )
+          }
+        />
+      ))}
 
-      <Route
-        path="/planned"
-        element={
-          <PrivateRoute>
-            <PlanedTask />
-          </PrivateRoute>
-        }
-      />
-
-      <Route
-        path="/assigned"
-        element={
-          <PrivateRoute>
-            <AssignedTask />
-          </PrivateRoute>
-        }
-      />
-
-      <Route path='/login' element={<Login />} />
-      <Route path='/register' element={<Register />} />
+      {/* 🔹 Private Routes */}
+      {privateRoutes.map(({ path, element: Component }) => (
+        <Route
+          key={path}
+          path={path}
+          element={
+            <PrivateRoute>
+              <Component />
+            </PrivateRoute>
+          }
+        />
+      ))}
     </Routes>
-  )
-}
+  );
+};

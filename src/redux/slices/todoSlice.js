@@ -20,17 +20,18 @@ const taskSlice = createSlice({
   reducers: {
     // Create Task
     addTask: (state, { payload }) => {
-      const currentDate = new Date().toISOString().split("T")[0];
+      const currentDate = new Date().toISOString()
       state.tasks.push({
         id: nanoid(),
         title: payload.title,
         progress: "pending", // "pending" ,"inprogress", "completed"
         priority: payload.priority ?? "low", // "low", "medium" , "high"
-        createdAt: Date.now(),
+        createdAt: currentDate,
         deadline: payload.deadline ?? "No deadline",
         steps: payload.steps ?? [],
-        reminder: payload.reminder ?? [], // data with time
+        reminder: payload.reminder ?? [], // date with time
         repeat: payload.repeat ?? "",
+        description: payload.description ?? ""
       });
       saveTasksToStorage(state.tasks);
       toast.success("Task added successfully!");
@@ -38,11 +39,9 @@ const taskSlice = createSlice({
 
     // Update Task
     updateTask: (state, { payload }) => {
-      console.log(payload);
-      
       state.tasks = state.tasks.map((task) => {
         if (task.id === payload.id) {
-          return {...task, ...payload.data}
+          return { ...task, ...payload.data }
         }
         return task
       });
@@ -52,9 +51,15 @@ const taskSlice = createSlice({
 
     // Delete Task
     deleteTask: (state, { payload }) => {
-      state.tasks = state.tasks.filter((task) => task.id !== payload.id);
-      saveTasksToStorage(state.tasks);
-      toast.info("Task deleted!");
+      if (payload.id) {
+        state.tasks = state.tasks.filter((task) => task.id !== payload.id);
+        saveTasksToStorage(state.tasks);
+        toast.info("Task deleted!");
+      }
+      else{
+        toast.error("Task Id is Invalid!");
+      }
+
     },
 
     getTasks: (state) => {

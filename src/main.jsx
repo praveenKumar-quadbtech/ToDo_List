@@ -7,11 +7,11 @@ import { BrowserRouter } from "react-router";
 import store from './redux/store';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  // <StrictMode>
     <BrowserRouter>
       <Provider store={store}>
         <App />
       </Provider>
     </BrowserRouter>
-  </StrictMode>,
+  // </StrictMode>,
 )

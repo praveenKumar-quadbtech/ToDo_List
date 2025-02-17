@@ -6,16 +6,40 @@ import { MdOutlineDarkMode } from 'react-icons/md'
 import { CiLight } from 'react-icons/ci'
 import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { toggleLayout, toggleTheme } from "../redux/slices/themeAndLayoutSlice"
+import { toggleLayout } from "../redux/slices/themeAndLayoutSlice"
 import { FaListUl } from "react-icons/fa"
+import UserProfileIcon from "./UserProfileIcon"
+import { logout } from "../redux/slices/authSlice"
 
 
-export const Header = ({ togleSidebar, isSidebarOpen }) => {
+export const Header = ({ togleSidebar, isSidebarOpen, toggleTheme, isDark }) => {
     const [isSearch, setisSearch] = useState(false)
     const [searchQuery, setSearchQuery] = useState("")
     const searchInput = useRef(null)
-    const { isDark, isGrid } = useSelector(state => state.themeAndLayout)
-const dispatch = useDispatch()
+    const { isGrid } = useSelector(state => state.themeAndLayout)
+    const dispatch = useDispatch()
+    const [isActive, setisActive] = useState(false)
+    const { user } = useSelector(state => state?.auth)
+
+    const [grid, setGrid] = useState(false)
+
+    const handelLogout = () => {
+        dispatch(logout())
+        setisActive(false)
+    }
+
+
+    const toggleGrid = () => {
+        setGrid(!grid)
+    }
+    useEffect(() => {
+        if (grid) {
+            document.documentElement.classList.add("grid-cont");
+        } else {
+            document.documentElement.classList.remove("grid-cont");
+        }
+    }, [grid]);
+
 
     useEffect(() => {
         if (isSearch) {
@@ -25,7 +49,7 @@ const dispatch = useDispatch()
     }, [isSearch])
 
     return (
-        <header className='dark:bg-[#242424] dark:text-white bg-[#FBFDFC] flex justify-between items-center'>
+        <header className='dark:bg-[#242424] dark:text-white bg-[#FBFDFC] flex justify-between items-center w-full'>
             <div className="flex gap-1 md:gap-4 items-center">
                 <span onClick={togleSidebar} className="cursor-pointer">
                     {isSidebarOpen ? <IoCloseSharp className="size-3 md:size-7 hover:border-2 rounded-sm" />
@@ -58,7 +82,10 @@ const dispatch = useDispatch()
                         className="size-3 md:size-6 hover:scale-125 cursor-pointer"
                     />
 
-                    <button onClick={()=>dispatch(toggleLayout())}>
+                    <button onClick={() => {
+                        dispatch(toggleLayout())
+                        toggleGrid()
+                    }}>
                         {isGrid ? <FaListUl
                             className="size-3 md:size-5 hover:scale-125 cursor-pointer"
                         />
@@ -68,7 +95,7 @@ const dispatch = useDispatch()
                             />}
                     </button>
 
-                    <button onClick={() => dispatch(toggleTheme())}>
+                    <button onClick={toggleTheme}>
                         {isDark ?
                             <CiLight
                                 className="size-3 md:size-6 hover:scale-125 cursor-pointer"
@@ -79,7 +106,27 @@ const dispatch = useDispatch()
                             />}
                     </button>
 
+                    {/* <div> */}
+                        <div className="flex md:hidden justify-center items-center p-2">
+
+                            {/* <img src="" alt="" /> */}
+                            {user ?
+                                <button onClick={() => setisActive(!isActive)}>
+                                    <UserProfileIcon user={user} />
+                                </button>
+                                :
+                                <Link className="bg-[#357937E0] text-white font-bold px-3 py-1 rounded-md cursor-pointer" to={"/login"}>Login</Link>
+                            }
+                        </div>
+                        {/* user actions button */}
+                        {/* <div className={`${isActive ? "flex" : "invisible"} flex-col justify-center items-center z-10 pt-2 absolute`}>
+                            <button onClick={() => setisActive(!isActive)} className="py-[2px] shadow-sm bg-[#FBFDFC] border-b-[2px] w-[70%] hover:text-green-400">My Profile</button>
+                            <button onClick={handelLogout} className="py-[2px] shadow-sm bg-[#FBFDFC] w-[70%] hover:text-green-400">Logout</button>
+                        </div> */}
+                    {/* </div> */}
                 </div>
+
+               
             </div>
 
         </header>

@@ -15,7 +15,7 @@ export const TaskList = () => {
   }, [])
 
   return (
-    <div className={`${isGrid ? "" : "w-full max-w-3xl m-auto"}`}>
+    <div className={`${isGrid ? "" : "w-full m-auto"}`}>
       <div className={`p-5 flex flex-col gap-2 m-5  dark:text-white`} >
         <h3 className='pb-3'>Here is the your all tasks</h3>
         {items?.length === 0 ?
@@ -23,7 +23,7 @@ export const TaskList = () => {
             <h3 className="p-4">No task found</h3>
           </div>
           :
-          <div className={`gap-2 ${isGrid ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4" : "flex flex-col"}`}>
+          <div className={`gap-2 ${isGrid ? "grid grid-cols-2 md:grid-cols-3" : "flex flex-col"}`}>
             {items?.map((task, idx) => {
               return <TaskCard key={idx} task={task} />
             })}

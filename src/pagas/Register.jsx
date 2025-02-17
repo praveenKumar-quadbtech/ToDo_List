@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
-import LoadingButton from "../utils/LodingButton";
+import LoadingButton from "../components/LodingButton";
 import { clearState, register } from "../redux/slices/authSlice";
 
 export const Register = () => {

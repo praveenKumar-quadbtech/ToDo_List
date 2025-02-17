@@ -2,6 +2,8 @@ import { ToastContainer } from "react-toastify";
 import Layout from "./components/Layout";
 
 export default function App() {
+  console.log("app is runing");
+  
   return <>
     <ToastContainer
       position="top-center" 

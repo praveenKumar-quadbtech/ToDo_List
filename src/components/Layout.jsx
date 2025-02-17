@@ -2,31 +2,33 @@ import { useEffect, useState } from "react";
 import "../App.css"
 import { Header } from "./Header";
 import Sidebar from "./Sidbar";
-import Home from "../pagas/Home";
 import { AllRoute } from "./AllRoute";
-import { GiSmokingPipe } from "react-icons/gi";
-import Footer from "./Footer";
-import { RightSidebar } from "./RightSidebar";
-import { useSelector } from "react-redux";
 
 const Layout = () => {
     const [isLeftBar, setIsLeftBar] = useState(false)
-    const { isDark } = useSelector(state => state.themeAndLayout)
-    const { isRightBar, data } = useSelector(state => state.sidebar)
+    const [isDark, setIsDark] = useState(() => {
+        return JSON.parse(localStorage.getItem("isDark")) ?? false;
+    });
+    const [isRightBar, setIsRightBar] = useState(false)
 
-    // const onClose = () => {
-    //     setisOpen(!isOpen)
-    // }
+    const toggleTheme = () => {
+        const newTheme = !isDark
+        setIsDark(newTheme)
+        localStorage.setItem("isDark", JSON.stringify(newTheme));
+    }
+
+    const toggleRightBar = (status) => {
+        setIsRightBar(status)
+    }
 
     const togleSidebar = () => {
         setIsLeftBar(!isLeftBar)
     }
 
     useEffect(() => {
-        // Function to check screen size and update state
         const handleResize = () => {
             const isMediumScreen = window.matchMedia('(min-width: 768px)').matches;
-            setIsLeftBar(isMediumScreen);
+            setIsLeftBar(prev => (prev !== isMediumScreen ? isMediumScreen : prev));
         };
 
         handleResize();
@@ -38,39 +40,39 @@ const Layout = () => {
     }, []);
 
     useEffect(() => {
-        if (isDark) {
-            document.documentElement.classList.add("dark");
-        } else {
-            document.documentElement.classList.remove("dark");
+        if (isDark !== (document.documentElement.classList.contains("dark"))) {
+            if (isDark) {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+            }
         }
     }, [isDark]);
+
+
     return (
-        <div className={`container sm:h-svh mx-auto ${isRightBar ? "pl-12" : "px-12"} h-screen min-h-screen max-h-screen w-screen bg-[#FBFDFC] dark:bg-[#242424]`}>
-           <nav className={`h-14 py-3 ${isRightBar ? "pr-12" : ""}`}>
-                <Header isSidebarOpen={isLeftBar} togleSidebar={togleSidebar} />
-           </nav>
-            <div className="flex justify-between h-[calc(100vh-56px)]">
-                <aside className={`transition-all duration-300 w-[18.5%] ${isLeftBar ? "" : "hidden"}`}>
+        <div className={`w-full h-auto bg-[#f2f2f2] dark:bg-[#242424] transition-all`} >
+            <nav className="fixed top-0 left-6 right-6 md:left-12 md:right-12 z-50 h-14 bg-[#FBFDFC] dark:bg-[#242424] shadow-sm flex items-center">
+                <Header isDark={isDark} isSidebarOpen={isLeftBar} togleSidebar={togleSidebar} toggleTheme={toggleTheme} />
+            </nav>
+
+            <div className={`w-full ${isRightBar ? "pl-6 md:pl-12" : "px-6 md:px-12"} flex justify-between mt-16 md:relative`}>
+                <aside className={`transition-all duration-300 w-[18.5%] ${isLeftBar ? "hidden md:block" : "hidden"}`}>
+                    <Sidebar isSidebarOpen={isLeftBar} toggleSidebar={togleSidebar} />
+                </aside>
+                <aside className={`absolute transition-all duration-300 left-0 top-0 w-[60%] ${isLeftBar ? "md:hidden block" : "hidden"}`}>
                     <Sidebar isSidebarOpen={isLeftBar} toggleSidebar={togleSidebar} />
                 </aside>
 
                 <main
-                    className={`${isLeftBar && isRightBar
-                            ? "w-[52%]" 
-                            : isRightBar
-                                ? "w-[71%]" 
-                                : isLeftBar
-                                    ? "w-[78.5%]" 
-                                    : "w-full" 
-                        } overflow-y-auto scrollable-container pb-5`}
+                    className={`${isLeftBar
+                        ? "md:w-[78.5%] w-full"
+                        : "w-full"
+                        }  pb-5`}
                 >
-                    <AllRoute />
+                    <AllRoute toggleRightBar={toggleRightBar} isRightBar={isRightBar} isLeftBar={isLeftBar} />
                 </main>
-
-                <aside className={`transition-all duration-300 w-[28%] ${isRightBar ? "block" : "hidden"}`}>
-                    <RightSidebar />
-                </aside>
-           </div>
+            </div>
         </div>
     );
 };

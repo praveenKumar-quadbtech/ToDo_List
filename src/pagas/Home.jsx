@@ -3,37 +3,56 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTasks } from "../redux/slices/todoSlice";
 import { AddTask } from "../components/AddTask";
 import { TaskContainer } from "../components/TaskContener";
-import { AiOutlineInbox } from "react-icons/ai"; // Import an icon
 import { useNavigate } from "react-router";
 
-const Home = () => {
+const Home = ({ isRightBar, toggleRightBar, isLeftBar }) => {
   const dispatch = useDispatch();
-  const { tasks } = useSelector(state => state.todos);
-  const [addNew, setAddNew] = useState(false)
+  const navigate = useNavigate();
   const { isLogged } = useSelector(state => state.auth);
-  const navigate = useNavigate()
+  const { tasks } = useSelector(state => state.todos);
+  const [addNew, setAddNew] = useState(false);
+
+ 
+  
+
+  const getWidthClass = () => {
+    if (isRightBar  && isLeftBar) return "w-full md:w-[58%]";
+    if (isRightBar ) return "w-full md:w-[67%]";
+    return "w-full";
+  };
 
   const toggleTaskForm = (status) => {
-    if (isLogged) {
-      setAddNew(status)
+    if (!isLogged) {
+      navigate("/login");
+      return;
     }
-    else {
-      navigate("/login")
-    }
-  }
+    setAddNew(status);
+  };
 
   useEffect(() => {
-    dispatch(getTasks());
-  }, [dispatch]);
+    if (isLogged) {
+      dispatch(getTasks());
+    }
+    console.log(tasks);
+  }, [dispatch, isLogged]);
 
+ 
   return (
-    <div className="w-full dark:bg-[#232323]" >
-      <h3 className="py-1 border-t-[1px] dark:border-0 dark:text-white">ToDo</h3>
-      {/* Add Task Component */}
-      <AddTask addNew={addNew} toggleTaskForm={toggleTaskForm}/>
+    <div className={`dark:bg-[#232323]`}>
+      <div className={`transition-all duration-300 ${getWidthClass()}`}>
+        <h3 className="py-1 border-t-[1px] dark:border-0 dark:text-white">ToDo</h3>
 
-      {/* Task Container */}
-      <TaskContainer toggleTaskForm={toggleTaskForm} />
+        {/* Add Task Component */}
+        <AddTask
+          addNew={addNew}
+          toggleTaskForm={toggleTaskForm}
+          toggleRightForm={toggleRightBar}
+          isRightForm={isRightBar}
+        />
+
+        {/* Task Container */}
+        <TaskContainer toggleTaskForm={toggleTaskForm} />
+      </div>
     </div>
   );
 };

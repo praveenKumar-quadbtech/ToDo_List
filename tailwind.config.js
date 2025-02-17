@@ -4,11 +4,7 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
-      gridTemplateAreas: {
-        layout_sm: ["navbar navbar", "main main", "footer footer"],
-        layout_md: ["navbar navbar", "sidebar main", "sidebar footer"],
-      },
     },
   },
-  plugins: [require("@savvywombat/tailwindcss-grid-areas")],
+  plugins: [],
 };
