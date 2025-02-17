@@ -10,6 +10,7 @@ import { toggleLayout } from "../redux/slices/themeAndLayoutSlice"
 import { FaListUl } from "react-icons/fa"
 import UserProfileIcon from "./UserProfileIcon"
 import { logout } from "../redux/slices/authSlice"
+import { Link } from "react-router"
 
 
 export const Header = ({ togleSidebar, isSidebarOpen, toggleTheme, isDark }) => {
