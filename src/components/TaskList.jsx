@@ -4,7 +4,7 @@ const TaskList = ({ title, tasks, icon: Icon, emptyMessage, isGrid, isEditBar, t
     <>
         <h3 className="text-md md:text-lg py-2">{title}</h3>
         {tasks.length === 0 ? (
-            <div className="bg-white flex flex-col justify-center items-center shadow-md rounded-lg p-6 mb-4 border text-gray-500">
+            <div className="bg-white dark:bg-[#232323] flex flex-col justify-center items-center shadow-md rounded-lg p-3  dark:text-white text-gray-500">
                 <Icon size={40} className="text-gray-400 mb-2" />
                 <h3 className="text-lg font-semibold">{emptyMessage}</h3>
             </div>

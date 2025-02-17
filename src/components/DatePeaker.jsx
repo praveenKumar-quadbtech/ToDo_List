@@ -8,23 +8,15 @@ import { formatDateTime } from "../utils/scripts";
 const MyDatePicker = ({ deadline, handleChange }) => {
     const [selectedDate, setSelectedDate] = useState(deadline ?? null);
     const [error, setError] = useState("");
-
-    console.log(selectedDate);
-    
     
     const handleDateChange = (date) => {
         setSelectedDate(date);
         setError(""); 
 
         const deadline = new Date(date).toISOString()
-        console.log(deadline);
         handleChange({ target: { name: "deadline" , value : deadline}});
     };
 
-    const handleSubmit = () => {
-        
-        console.log("Selected Date & Time:", selectedDate);
-    };
 
     return (
         <div className="flex flex-col gap-2 px-3 py-2 justify-start border-b-[0.5px] border-black dark:border-green-100">

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { IoCloseSharp, IoRepeatOutline } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
 import { MdDeleteForever } from "react-icons/md";
-import { FaRegBell, FaStar, FaRegStar } from "react-icons/fa";
+import { FaRegBell } from "react-icons/fa";
 import { deleteTask } from "../redux/slices/todoSlice";
 import { updateTodo } from "../redux/actions/task";
 import { AddStaps } from "../components/AddStaps";
@@ -12,15 +12,12 @@ import SetReminder from "./SetReminder";
 import { ShowSteps } from "./ShowSteps";
 import { ShowReminders } from "./ShowReminders";
 
-export const RightSidebar = ({ toggleRightForm, handelChange, formData }) => {
+export const RightSidebar = ({ toggleRightForm, handelChange, formData, formType, handleAdd }) => {
     const dispatch = useDispatch();
-    const [stepsCount, setStepsCount] = useState(0);
     const [step, setStep] = useState("");
     const [isStepAdd, setisStepAdd] = useState(false)
     const [isOpen, setIsOpen] = useState(false);
     const [isErr, setErr] = useState("")
-    console.log(formData);
-
 
     const handleStepKeyDown = (e) => {
         if (e.key === "Enter") {
@@ -43,28 +40,18 @@ export const RightSidebar = ({ toggleRightForm, handelChange, formData }) => {
     };
 
 
-    const handleStatusToggle = () => {
-        const newProgress = formData.progress === "pending" ? "completed" : "pending";
-        dispatch(updateTodo({ id: formData._id, data: { ...formData, progress: newProgress } }));
-    };
-
-    const handlePriorityToggle = () => {
-        const newPriority = formData.priority === "low" || formData.priority === "medium" ? "high" : "low";
-        dispatch(updateTodo({ id: formData._id, data: { ...formData, priority: newPriority } }));
-    };
-
     useEffect(() => {
         setErr("")
     }, [formData])
 
     return (
-        <div className="w-100% bg-green-50 dark:bg-[#232323] dark:text-white flex flex-col justify-between gap-10">
+        <div className="w-100% bg-green-50 dark:bg-[#232323] dark:text-white flex flex-col justify-between gap-7 md:gap-10 pb-2">
             <div className="flex flex-col gap-2 text-sm">
                 {/* Title Input */}
 
                 <span className="border-b-[0.5px] border-black dark:border-green-100 py-2 px-3">
                     <input
-                        className="w-full focus:border-[0.5px] rounded-md dark:bg-[#2c2c2c] dark:text-white px-3 py-1  border-black dark:border-green-100 outline-none"
+                        className="w-full border-[0.5px] dark:focus:border-[0.5px] rounded-md dark:bg-[#2c2c2c] dark:text-white px-3 md:py-1 py-2 border-black dark:border-green-100 outline-none"
                         type="text"
                         name="title"
                         value={formData.title}
@@ -90,7 +77,7 @@ export const RightSidebar = ({ toggleRightForm, handelChange, formData }) => {
                 <MyDatePicker handleChange={handelChange} date={formData?.deadline} />
 
                 {/* Set Reminder */}
-                <div className="flex flex-col gap-2 px-3 py-2 border-b-[0.5px] text-sm border-black dark:border-green-100">
+                <div className="flex flex-col gap-2 py-3 border-b-[0.5px] text-sm border-black dark:border-green-100 px-5">
                     {formData?.reminders?.length !== 0 ? <ShowReminders reminders={formData?.reminders} /> : null}
                     {isErr && <p className="text-red-500 text-sm">{isErr}</p>}
                     {
@@ -149,10 +136,12 @@ export const RightSidebar = ({ toggleRightForm, handelChange, formData }) => {
             </div>
 
             {/* Footer */}
-            <div className="w-full flex justify-between px-2 py-3 items-center border-b border-green-100">
-                <IoCloseSharp onClick={() => toggleRightForm(false)} className="cursor-pointer size-6" />
+            <div className="w-full flex justify-between px-5 pt-1 pb-3 md:px-3 md:py-3 items-center border-b border-green-100">
+                <IoCloseSharp onClick={() => toggleRightForm(false)} className="cursor-pointer size-8 md:size-6" />
                 <p>Created Today</p>
-                <MdDeleteForever onClick={handleDelete} className="cursor-pointer size-6" />
+                {formType === "add" ? 
+                <button className="bg-[#357937E0] rounded-md px-3 py-1 font-bold text-white" onClick={handleAdd}>ADD TASK</button> 
+                : <MdDeleteForever onClick={handleDelete} className="cursor-pointer size-6" />}
             </div>
         </div>
     );

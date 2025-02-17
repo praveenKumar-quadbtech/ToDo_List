@@ -25,8 +25,8 @@ export const Login = () => {
     }, [isLogged]);
 
     return (
-        <section className="h-[450px]  flex justify-center items-center dark:bg-[#242424] dark:text-white  bg-gray-50 py-3">
-            <div className="w-[80%] md:w-[50%] h-full dark:bg-[#232323] dark:text-white bg-white shadow-lg rounded-md p-6 border-2 pb-5 ">
+        <section className="flex justify-center items-center py-10 dark:bg-[#242424] dark:text-white  bg-gray-50">
+            <div className="w-[90%] md:w-[50%] h-full dark:bg-[#232323] dark:text-white bg-white shadow-lg dark: rounded-md p-6  pb-5 ">
                 <div className="text-center">
                     <h2 className="text-xl md:text-3xl font-bold dark:text-white text-black">Welcome Back!</h2>
                     <p className="mt-2 dark:text-white text-gray-600">Login to your account</p>
@@ -76,7 +76,7 @@ export const Login = () => {
                         <Link
                             onClick={() => dispatch(clearState())}
                             to="/register"
-                            className=" text-orange-500 hover:text-orange-600 hover:underline"
+                            className="hover:underline"
                         >
                             Create a free account
                         </Link>

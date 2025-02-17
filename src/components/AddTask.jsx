@@ -24,8 +24,6 @@ export const AddTask = ({ addNew, toggleTaskForm, toggleRightForm, isRightForm }
    
     const handelChange = (e) => {
         const { name, value } = e.target
-        console.log(name, value);
-
        
         if (name === "steps") {
             setFormData((prev) => ({
@@ -43,13 +41,9 @@ export const AddTask = ({ addNew, toggleTaskForm, toggleRightForm, isRightForm }
                 reminders: [...prev.reminders, value],
             }));
         }
-
-
         else{
             setFormData({ ...formData, [name]: value })
         }
-
-        
     }
 
     const handleAdd = () => {
@@ -70,11 +64,11 @@ export const AddTask = ({ addNew, toggleTaskForm, toggleRightForm, isRightForm }
     }, [addNew])
 
     return (<>
-        <div className={`${!addNew ? "flex" : "hidden"} bg-green-50 dark:bg-[#2F3630] flex justify-end px-5 py-2 rounded-sm`} >
+        <div className={`${!addNew ? "flex" : "hidden"} bg-green-50 dark:bg-[#2F3630] flex justify-end px-5 py-2 rounded-md`} >
             <button className="bg-[#357937E0] rounded-md px-3 py-1 font-bold text-white" onClick={() => toggleTaskForm(true)}>Add New</button>
         </div>
 
-        <div className={`${addNew ? "flex" : "hidden"} rounded-sm w-full dark:bg-[#2F3630] py-1 dark:text-white flex-col gap-2 px-5 text-gray-900 bg-green-50`}>
+        <div className={`${addNew ? "flex" : "hidden"} rounded-md w-full dark:bg-[#2F3630] py-1 dark:text-white flex-col gap-2 px-5 text-gray-900 bg-green-50`}>
             {/* Task Title */}
             <form >
                 <div className='flex flex-col max-w-md'>
@@ -93,11 +87,11 @@ export const AddTask = ({ addNew, toggleTaskForm, toggleRightForm, isRightForm }
 
                 {/* Right Sidebar */}
                 {isRightForm ? (
-                    <div className="absolute border-[0.5px] rounded-sm right-0 top-16 md:top-0 md:w-[30%] transition-all duration-300  md:transform md:translate-x-0 opacity-100">
-                        <RightSidebar toggleRightForm={toggleRightForm} handelChange={handelChange} formData={formData}/>
+                    <div className="mb-3 absolute border-[0.5px] rounded-sm right-0 top-16 md:top-0 w-full md:w-[30%] overflow-y-auto transition-all duration-300  md:transform md:translate-x-0 opacity-100 z-40">
+                        <RightSidebar toggleRightForm={toggleRightForm} handelChange={handelChange} formData={formData} formType={"add"} handleAdd={handleAdd}/>
                     </div>
                 ) : (
-                    <div className="absolute right-0 top-16 md:top-0 w-[29%] 
+                    <div className="absolute right-0 top-16 md:top-0 w-[29%]
                   transition-all duration-300  transform translate-x-full opacity-0">
                     </div>
                 )}

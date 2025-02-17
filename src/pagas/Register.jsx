@@ -32,8 +32,8 @@ export const Register = () => {
   
     
 
-    <section className="h-auto  flex justify-center items-center dark:bg-[#242424] dark:text-white  bg-gray-50 py-3">
-      <div className="w-[80%] md:w-[50%] h-full dark:bg-[#232323] dark:text-white bg-white shadow-lg rounded-md p-6 border-2 pb-5 ">
+    <section className="h-auto flex justify-center items-center dark:bg-[#242424] dark:text-white  bg-gray-50 py-3">
+      <div className="w-[95%] md:w-[50%] h-full dark:bg-[#232323] dark:text-white bg-white shadow-lg rounded-md p-6 pb-5 ">
         <div className="text-center">
           <h2 className="text-xl md:text-3xl font-bold dark:text-white text-black">Create a New Account</h2>
           <p className="mt-2 dark:text-white text-gray-600">Register to access all features</p>
@@ -99,7 +99,7 @@ export const Register = () => {
             <Link
               onClick={() => dispatch(clearState())}
               to="/login"
-              className="font-medium text-orange-500 transition-all duration-200 hover:text-orange-600 hover:underline"
+              className="hover:underline"
             >
               Log in
             </Link>

@@ -8,8 +8,8 @@ const LoadingButton = ({
     chickHandler,
     size = "w-full",
     textColor = "text-white",
-    bgColor = "bg-blue-500",
-    hoverColor = "hover:bg-blue-700",
+    bgColor = "bg-[#336e34]",
+    hoverColor = "",
 }) => {
     return (
         <div>

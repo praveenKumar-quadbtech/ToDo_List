@@ -57,7 +57,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
 
     return (<>
         <div className="flex flex-col pt-16">
-            <div className="flex flex-col gap-1 dark:bg-[#2C2C2C] bg-[#EEF6EF] px-3 relative py-5">
+            <div className="flex flex-col gap-1 dark:bg-[#2C2C2C] bg-[#EEF6EF] px-3 relative py-5 rounded-md">
                 {/* user profile */}
                 <div className="hidden md:flex justify-center items-center md:absolute top-[-35px] left-1/2 transform -translate-x-1/2">
                     {/* <img src="" alt="" /> */}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,13 @@ export const TaskCard = ({ task }) => {
   const dispatch = useDispatch();
   const { isOpen } = useSelector((state) => state.sidebar);
   const { isGrid } = useSelector((state) => state.themeAndLayout);
+  const [isEditBar, setIsEditBar] = useState(false)
 
+  console.log(isEditBar);
+
+  const toggleEditBar = () => {
+    setIsEditBar(!isEditBar)
+  }
 
   const handlePriorityChange = () => {
     const newPriority = task.priority === "low" || task.priority === "medium" ? "high" : "low";
@@ -56,29 +62,36 @@ export const TaskCard = ({ task }) => {
         <p className="text-sm md:text-lg first-letter:uppercase dark:text-white text-gray-800 flex flex-wrap">{task?.title}</p>
       </div>
 
-      {/* Change Priority Button */}
-      <button onClick={handlePriorityChange} aria-label="Change Priority">
-        {task.priority === "low" || task.priority === "medium" ? (
-          <FaRegStar className={`text-md md:text-2xl text-black dark:text-white`} />
-        ) : (
+      <div className="flex gap-3 items-center pr-4">
+        {/* Change Priority Button */}
+        <button onClick={handlePriorityChange} aria-label="Change Priority">
+          {task.priority === "low" || task.priority === "medium" ? (
+            <FaRegStar className={`text-md md:text-2xl text-black dark:text-white`} />
+          ) : (
             <FaStar className={`text-md md:text-2xl text-black dark:text-white`} />
-        )}
-      </button>
-      
+          )}
+        </button>
+
+        <button onClick={toggleEditBar}>
+          <BiSolidEdit className={`text-md md:text-2xl text-black dark:text-white`} />
+        </button>
+      </div>
+
+
 
 
       {/* Right Sidebar */}
-      {/* {isEditBar ? (
-        <div className="absolute border-2 right-0 top-0 w-[30%] transition-all duration-300  transform translate-x-0 opacity-100">
+      {isEditBar ? (
+        <div className="mb-3 absolute border-[0.5px] rounded-sm right-0 top-16 md:top-0 w-full md:w-[30%] overflow-y-auto transition-all duration-300  md:transform md:translate-x-0 opacity-100 z-40">
           <form >
-            <RightSidebar handelChange={() => { }} toggleRightForm={toggleEditBar} formData={task} />
+            <RightSidebar handelChange={() => { }} toggleRightForm={toggleEditBar} formData={task} formType={"edit"} />
           </form>
         </div>
       ) : (
         <div className="absolute border-2 right-0 top-0 w-[29%] 
                                               transition-all duration-300  transform translate-x-full opacity-0">
         </div>
-      )} */}
+      )}
     </div>
   );
 };

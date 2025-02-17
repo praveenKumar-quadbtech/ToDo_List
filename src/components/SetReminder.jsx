@@ -8,25 +8,15 @@ const SetReminder = ({ isOpen, setIsOpen, deadline, handelChange }) => {
     });
     const [remainingTime, setRemainingTime] = useState(0);
     const [reminder, setReminder] = useState(null);
-
-    console.log("reminderTime", reminderTime);
-    console.log("remainingTime", remainingTime);
     
     const current = new Date();
     const dueDate = new Date(deadline);
-    console.log(dueDate,dueDate);
     
-
     const totalRemainingMinutes = Math.floor(remainingTime / (1000 * 60));
-
     
     const remainingDays = Math.floor(totalRemainingMinutes / (60 * 24));
     const remainingHours = Math.floor((totalRemainingMinutes % (60 * 24)) / 60);
     const remainingMinutes = totalRemainingMinutes % 60;
-
-    console.log("remainingDays", remainingDays);
-    console.log("remainingHours", remainingHours);
-    console.log("remainingMinutes", remainingMinutes);
     
 
     useEffect(() => {
@@ -51,7 +41,6 @@ const SetReminder = ({ isOpen, setIsOpen, deadline, handelChange }) => {
         });
     };
 
-
     const calculateReminder = () => {
         if (!deadline || remainingTime <= 0) return;
 
@@ -64,7 +53,6 @@ const SetReminder = ({ isOpen, setIsOpen, deadline, handelChange }) => {
         setReminder(reminderDate.toLocaleString());
         const ISOFormat = reminderDate.toISOString();
 
-        console.log("Reminder Time (ISO Format):", ISOFormat);
         handelChange({ target: { name: "reminders", value: ISOFormat } });
     };
 
