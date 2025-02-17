@@ -6,7 +6,8 @@ import ".././index.css";
 import { formatDateTime } from "../utils/scripts";
 
 const MyDatePicker = ({ deadline, handleChange }) => {
-    const [selectedDate, setSelectedDate] = useState(deadline ?? null);
+    const [selectedDate, setSelectedDate] = useState(deadline ? new Date(deadline) : null);
+
     const [error, setError] = useState("");
     
     const handleDateChange = (date) => {

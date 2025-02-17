@@ -13,7 +13,7 @@ export const TaskCard = ({ task }) => {
   const { isGrid } = useSelector((state) => state.themeAndLayout);
   const [isEditBar, setIsEditBar] = useState(false)
 
-  console.log(isEditBar);
+  
 
   const toggleEditBar = () => {
     setIsEditBar(!isEditBar)
@@ -30,9 +30,7 @@ export const TaskCard = ({ task }) => {
     );
   };
 
-  const handleDelete = () => {
-    dispatch(deleteTask({ id: task.id }));
-  };
+  
 
   const handleStatus = () => {
     const newProgress = task.progress === "pending" ? "completed" : "pending";
@@ -45,9 +43,26 @@ export const TaskCard = ({ task }) => {
     );
   };
 
+
+  const cardContStyling = `bg-[#FBFDFC] cursor-pointer dark:bg-[#232323] dark:text-white flex justify-between items-baseline  md:items-center  ${isGrid ? "shadow-md py-5 px-2 rounded-md text-sm/2 md:text-md" : "border-b-2 dark:border-b-[0.5px] py-4 px-4"}  border-green-100  transition-all`
+
+  const editBarSmStyling = `dark:bg-[#232323] dark:text-white bg-green-100 shadow-md shadow-black dark:shadow-white rounded-t-2xl  absolute border-[0.5px] rounded-sm  -bottom-12 left-4 right-4 pt-4  md:w-[30%] overflow-y-auto transition-all duration-300 transform ${isEditBar ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"} z-40`
+  
+  const getCss = () => `
+  dark:bg-[#232323] dark:text-white bg-green-100 shadow-md shadow-black dark:shadow-white 
+  border-[0.5px] rounded-sm overflow-y-auto transition-all duration-300 
+  transform z-40
+
+  /* Small Screen Styles */
+  rounded-t-2xl absolute bottom-4 left-4 right-4 pt-4
+  ${isEditBar ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}
+
+  /* Medium Screen Styles */
+  md:w-[30%] md:right-0 md:rounded-none md:top-0 md:left-auto md:bottom-auto
+`;
   return (
     <div
-      className={`bg-[#FBFDFC] cursor-pointer dark:bg-[#232323] dark:text-white flex justify-between items-baseline  md:items-center  ${isGrid ? "shadow-md py-5 px-2 rounded-md text-sm/2 md:text-md" : "border-b-2 dark:border-b-[0.5px] py-2 px-4"}  border-green-100  transition-all`}
+      className={cardContStyling}
 
     >
       {/* Task Title and Checkbox */}
@@ -81,17 +96,13 @@ export const TaskCard = ({ task }) => {
 
 
       {/* Right Sidebar */}
-      {isEditBar ? (
-        <div className="mb-3 absolute border-[0.5px] rounded-sm right-0 top-16 md:top-0 w-full md:w-[30%] overflow-y-auto transition-all duration-300  md:transform md:translate-x-0 opacity-100 z-40">
-          <form >
-            <RightSidebar handelChange={() => { }} toggleRightForm={toggleEditBar} formData={task} formType={"edit"} />
-          </form>
-        </div>
-      ) : (
-        <div className="absolute border-2 right-0 top-0 w-[29%] 
-                                              transition-all duration-300  transform translate-x-full opacity-0">
-        </div>
-      )}
+        { isEditBar && (
+        <div className={getCss()}>
+            <form>
+              <RightSidebar handelChange={() => { }} toggleRightForm={toggleEditBar} formData={task} formType={"edit"} />
+            </form>
+          </div>
+        )}
     </div>
   );
 };

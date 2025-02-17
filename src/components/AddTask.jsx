@@ -63,6 +63,21 @@ export const AddTask = ({ addNew, toggleTaskForm, toggleRightForm, isRightForm }
         inputRef.current.focus()
     }, [addNew])
 
+
+    const getCss = () => `
+  dark:bg-[#232323] dark:text-white bg-green-100 shadow-md shadow-black dark:shadow-white 
+  border-[0.5px] rounded-sm overflow-y-auto transition-all duration-300 
+  transform z-40
+
+  /* Small Screen Styles */
+  rounded-t-2xl absolute bottom-4 left-4 right-4 pt-4
+  ${isRightForm ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}
+
+  /* Medium Screen Styles */
+  md:w-[30%] md:right-0 md:rounded-none md:top-0 md:left-auto md:bottom-auto
+`;
+
+    
     return (<>
         <div className={`${!addNew ? "flex" : "hidden"} bg-green-50 dark:bg-[#2F3630] flex justify-end px-5 py-2 rounded-md`} >
             <button className="bg-[#357937E0] rounded-md px-3 py-1 font-bold text-white" onClick={() => toggleTaskForm(true)}>Add New</button>
@@ -86,15 +101,11 @@ export const AddTask = ({ addNew, toggleTaskForm, toggleRightForm, isRightForm }
                 </div>
 
                 {/* Right Sidebar */}
-                {isRightForm ? (
-                    <div className="mb-3 absolute border-[0.5px] rounded-sm right-0 top-16 md:top-0 w-full md:w-[30%] overflow-y-auto transition-all duration-300  md:transform md:translate-x-0 opacity-100 z-40">
+                {isRightForm &&
+                    <div className={getCss()}>
                         <RightSidebar toggleRightForm={toggleRightForm} handelChange={handelChange} formData={formData} formType={"add"} handleAdd={handleAdd}/>
                     </div>
-                ) : (
-                    <div className="absolute right-0 top-16 md:top-0 w-[29%]
-                  transition-all duration-300  transform translate-x-full opacity-0">
-                    </div>
-                )}
+              }
 
 
             </form>

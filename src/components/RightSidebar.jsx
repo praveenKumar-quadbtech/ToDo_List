@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IoCloseSharp, IoRepeatOutline } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
-import { MdDeleteForever } from "react-icons/md";
+import { MdDeleteForever, MdFileDownloadDone } from "react-icons/md";
 import { FaRegBell } from "react-icons/fa";
 import { deleteTask } from "../redux/slices/todoSlice";
 import { updateTodo } from "../redux/actions/task";
@@ -35,8 +35,8 @@ export const RightSidebar = ({ toggleRightForm, handelChange, formData, formType
 
 
     const handleDelete = () => {
-        dispatch(deleteTask({ id: formData._id }));
-        dispatch(onClose());
+        dispatch(deleteTask({ id: formData.id }));
+        toggleRightForm(false)
     };
 
 
@@ -45,7 +45,7 @@ export const RightSidebar = ({ toggleRightForm, handelChange, formData, formType
     }, [formData])
 
     return (
-        <div className="w-100% bg-green-50 dark:bg-[#232323] dark:text-white flex flex-col justify-between gap-7 md:gap-10 pb-2">
+        <div className="w-100% bg-green-100 dark:bg-[#232323] dark:text-white flex flex-col-reverse md:flex-col justify-between gap-7 md:gap-10 pb-4">
             <div className="flex flex-col gap-2 text-sm">
                 {/* Title Input */}
 
@@ -74,7 +74,7 @@ export const RightSidebar = ({ toggleRightForm, handelChange, formData, formType
                 </span>
 
                 {/*due Date Picker */}
-                <MyDatePicker handleChange={handelChange} date={formData?.deadline} />
+                <MyDatePicker handleChange={handelChange} deadline={formData?.deadline} />
 
                 {/* Set Reminder */}
                 <div className="flex flex-col gap-2 py-3 border-b-[0.5px] text-sm border-black dark:border-green-100 px-5">
@@ -140,7 +140,7 @@ export const RightSidebar = ({ toggleRightForm, handelChange, formData, formType
                 <IoCloseSharp onClick={() => toggleRightForm(false)} className="cursor-pointer size-8 md:size-6" />
                 <p>Created Today</p>
                 {formType === "add" ? 
-                <button className="bg-[#357937E0] rounded-md px-3 py-1 font-bold text-white" onClick={handleAdd}>ADD TASK</button> 
+                    <button className="bg-[#357937E0] rounded-md px-3 py-1 font-bold text-white" onClick={handleAdd}><MdFileDownloadDone size={20}/></button> 
                 : <MdDeleteForever onClick={handleDelete} className="cursor-pointer size-6" />}
             </div>
         </div>
