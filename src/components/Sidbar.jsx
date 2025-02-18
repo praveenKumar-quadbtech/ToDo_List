@@ -1,11 +1,11 @@
-import React from "react"
+import React, { useEffect} from "react"
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useLocation } from "react-router";
 import UserProfileIcon from "../components/UserProfileIcon";
 import { IoTodayOutline } from "react-icons/io5";
 import { FaRegStar } from "react-icons/fa6";
-import { MdAssignmentInd, MdOutlineAssignment} from "react-icons/md";
+import { MdAssignmentInd, MdOutlineAssignment } from "react-icons/md";
 import { TbBook } from "react-icons/tb";
 
 import { logout } from "../redux/slices/authSlice";
@@ -18,7 +18,9 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
     const [isActive, setisActive] = useState(false)
     const dispatch = useDispatch()
     const location = useLocation();
-    const todayTask = 0
+    const [todayTaskCount, setTodayTaskCount] = useState(0)
+    
+
     const navigation = [
         {
             path: '/',
@@ -53,10 +55,25 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
         setisActive(false)
     }
 
+    
+
+    useEffect(() => {
+        const currentDate = new Date().toISOString().split("T")[0]
+        const todayTask = tasks?.filter(task => {
+            if (task?.deadline) {
+                const deadline = new Date(task?.deadline).toISOString().split("T")[0];
+                if (deadline == currentDate) {
+                    return task
+                }
+            }
+        })
+
+        setTodayTaskCount(todayTask?.length)
+    }, [tasks])
 
 
     return (<>
-        <div className="flex flex-col pt-16">
+        <div  className="flex flex-col pt-16">
             <div className="flex flex-col gap-1 dark:bg-[#2C2C2C] bg-[#EEF6EF] px-3 relative py-5 rounded-md">
                 {/* user profile */}
                 <div className="hidden md:flex w-full justify-center items-center md:absolute top-[-35px] left-1/2 transform -translate-x-1/2">
@@ -93,8 +110,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                                     <span>
                                         {React.cloneElement(item.icon, {
                                             className: `w-5 h-5 ${location.pathname === item.path
-                                                    ? "text-[#357937] fill-[#357937]"
-                                                    : "text-gray-500 dark:text-white group-hover:text-[#357937]"
+                                                ? "text-[#357937] fill-[#357937]"
+                                                : "text-gray-500 dark:text-white group-hover:text-[#357937]"
                                                 }`,
                                         })}
                                     </span>
@@ -116,7 +133,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                     <div className="flex justify-between">
                         <span>
                             <p className="text-[10px]">Today Tasks</p>
-                            <h3>{todayTask}</h3>
+                            <h3>{todayTaskCount}</h3>
                         </span>
                         <BiInfoCircle />
                     </div>

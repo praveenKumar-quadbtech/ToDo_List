@@ -62,17 +62,31 @@ export const AddTask = ({ addNew, toggleTaskForm, toggleRightForm, isRightForm }
     }, [addNew])
 
 
+//     const getCss = () => `
+//   dark:bg-[#232323] dark:text-white bg-green-100 shadow-md shadow-black dark:shadow-white 
+//   border-[0.5px] rounded-sm overflow-y-auto transition-all duration-300 
+//   transform z-40
+
+//   /* Small Screen Styles */
+//   rounded-t-3xl absolute -bottom-1 h-[80vh] left-1 right-1 pt-4
+//   ${isRightForm ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}
+
+//   /* Medium Screen Styles */
+//   md:w-[30%] md:right-0 md:h-auto md:rounded-sm md:top-0 md:left-auto md:bottom-auto md:shadow-sm md:transition-all
+// `;
+
+
     const getCss = () => `
   dark:bg-[#232323] dark:text-white bg-green-100 shadow-md shadow-black dark:shadow-white 
-  border-[0.5px] rounded-sm overflow-y-auto transition-all duration-300 
+  border-[0.5px] rounded-sm overflow-y-auto transition-transform transition-opacity duration-300 ease-in-out 
   transform z-40
 
   /* Small Screen Styles */
-  rounded-t-3xl absolute -bottom-1 h-[85vh] left-1 right-1 pt-4
+  rounded-t-3xl absolute -bottom-1 h-[80vh] left-1 right-1 pt-4
   ${isRightForm ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}
 
   /* Medium Screen Styles */
-  md:w-[30%] md:right-0 md:rounded-sm md:top-0 md:left-auto md:bottom-auto md:shadow-sm
+  md:w-[30%] md:right-0 md:h-auto md:rounded-sm md:top-0 md:left-auto md:bottom-auto md:shadow-sm
 `;
 
     

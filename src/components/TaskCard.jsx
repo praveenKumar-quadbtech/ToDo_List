@@ -49,8 +49,6 @@ export const TaskCard = ({ task }) => {
     );
   };
 
-  
-
   const handleStatus = () => {
     const newProgress = task.progress === "pending" ? "completed" : "pending";
 
@@ -81,11 +79,11 @@ const handleUpdateTask = ()=>{
   transform z-40
 
   /* Small Screen Styles */
-  rounded-t-3xl absolute bottom-0 h-[85vh] left-1 right-1 pt-4
+  rounded-t-3xl absolute bottom-0 h-[80vh] left-1 right-1 pt-4
   ${isEditBar ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}
 
   /* Medium Screen Styles */
-  md:w-[30%] md:right-0 md:rounded-none md:top-0 md:left-auto md:bottom-auto
+  md:w-[30%]  md:h-auto md:right-0 md:rounded-none md:top-0 md:left-auto md:bottom-auto
 `;
 
   return (

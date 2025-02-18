@@ -5,7 +5,6 @@ import { IoMdAdd } from "react-icons/io";
 import { MdDeleteForever, MdFileDownloadDone } from "react-icons/md";
 import { FaRegBell } from "react-icons/fa";
 import { deleteTask } from "../redux/slices/todoSlice";
-import { updateTodo } from "../redux/actions/task";
 import { AddStaps } from "../components/AddStaps";
 import MyDatePicker from "../components/DatePeaker";
 import SetReminder from "./SetReminder";
@@ -13,8 +12,6 @@ import { ShowSteps } from "./ShowSteps";
 import { ShowReminders } from "./ShowReminders";
 
 export const RightSidebar = ({ toggleRightForm, handelChange, formData, formType, handleAdd }) => {
-    console.log(formData);
-    
     const dispatch = useDispatch();
     const [isStepAdd, setisStepAdd] = useState(false)
     const [isOpen, setIsOpen] = useState(false);

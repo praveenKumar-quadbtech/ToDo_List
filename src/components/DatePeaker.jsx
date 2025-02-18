@@ -29,7 +29,6 @@ const MyDatePicker = ({ deadline, handleChange }) => {
                 <DatePicker
                     selected={selectedDate}
                     onChange={handleDateChange}
-                    className=""
                     inline
                     dateFormat="MMMM d, yyyy h:mm aa"
                     minDate={new Date()}
@@ -40,6 +39,7 @@ const MyDatePicker = ({ deadline, handleChange }) => {
                     filterTime={(time) => {
                         return time > new Date(); 
                     }}
+                    className="text-xs sm:text-sm md:text-base"
                 />
 
             </div>

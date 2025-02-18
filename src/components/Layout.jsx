@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../App.css"
 import { Header } from "./Header";
 import Sidebar from "./Sidbar";
@@ -10,6 +10,7 @@ const Layout = () => {
         return JSON.parse(localStorage.getItem("isDark")) ?? false;
     });
     const [isRightBar, setIsRightBar] = useState(false)
+    const sidebarRef = useRef(null)
 
     const toggleTheme = () => {
         const newTheme = !isDark
@@ -24,6 +25,26 @@ const Layout = () => {
     const togleSidebar = () => {
         setIsLeftBar(!isLeftBar)
     }
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            const isSmallScreen = window.innerWidth < 768; 
+
+            if (isSmallScreen && sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+                setIsLeftBar(false);  
+            }
+        };
+
+        if (isLeftBar) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isLeftBar]);
+ 
+
 
     useEffect(() => {
         const handleResize = () => {
@@ -57,7 +78,7 @@ const Layout = () => {
             </nav>
 
             <div className={`w-full ${isRightBar ? "pl-6 md:pl-12" : "px-6 md:px-12"} flex justify-between mt-16 md:relative`}>
-                <aside className={`transition-all duration-300 w-[18.5%] ${isLeftBar ? "hidden md:block" : "hidden"}`}>
+                <aside ref={sidebarRef} className={`transition-all duration-300 w-[18.5%] ${isLeftBar ? "hidden md:block" : "hidden"}`}>
                     <Sidebar isSidebarOpen={isLeftBar} toggleSidebar={togleSidebar} />
                 </aside>
                 <aside className={`absolute transition-all duration-300 left-0 top-0 w-[60%] ${isLeftBar ? "md:hidden block" : "hidden"}`}>

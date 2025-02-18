@@ -11,10 +11,7 @@ export const TodayTask = () => {
 
     const dispatch = useDispatch()
     const currentDate = new Date().toISOString().split("T")[0]
-    // console.log("currentDate", currentDate);
-
-
-    const todayTask =  items?.filter(task => {
+   const todayTask =  items?.filter(task => {
         if(task?.deadline){
             const deadline = new Date(task?.deadline).toISOString().split("T")[0];
             if(deadline == currentDate){
@@ -27,8 +24,6 @@ export const TodayTask = () => {
         dispatch(getTasks())
     }, [])
 
-
-    const inportentTask = items?.filter(task => task?.priority === "high")
 
     return (
         <div className="md:mt-7">
