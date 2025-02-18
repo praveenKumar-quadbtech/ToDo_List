@@ -2,36 +2,43 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { TaskCard } from '../components/TaskCard'
 import { getTasks } from '../redux/slices/todoSlice'
+import { AiOutlineInbox } from "react-icons/ai";
+import TaskList from '../components/TaskList';
 
 export const TodayTask = () => {
-    const { tasks : items, loading, error } = useSelector(state => state.todos)
-      const {  isGrid } = useSelector(state => state.themeAndLayout)
-    
+    const { tasks: items, loading, error } = useSelector(state => state.todos)
+    const { isGrid } = useSelector(state => state.themeAndLayout)
+
     const dispatch = useDispatch()
-    const currentDate = new Date().toISOString().split("T")[0];
- 
+    const currentDate = new Date().toISOString().split("T")[0]
+    // console.log("currentDate", currentDate);
+
+
+    const todayTask =  items?.filter(task => {
+        if(task?.deadline){
+            const deadline = new Date(task?.deadline).toISOString().split("T")[0];
+            if(deadline == currentDate){
+                return task
+            }
+        }
+    })
 
     useEffect(() => {
         dispatch(getTasks())
     }, [])
+
+
+    const inportentTask = items?.filter(task => task?.priority === "high")
+
     return (
-        <div className={`${isGrid ? "" : "w-full max-w-3xl m-auto"}`}>
-        <div className='p-5 flex flex-col gap-2 m-5 dark:text-white'>
-            <h3 className='pb-3'>Here is the your all today tasks</h3>
-            {items?.length === 0 ?
-                <div>
-                    <h3 className="p-4">No task found</h3>
-                </div>
-                :
-                    <div className={`gap-2 ${isGrid ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4" : "flex flex-col"}`}>
-                {items?.map((task, idx) => {
-                    if (task?.deadline === currentDate) {
-                        return <TaskCard key={idx} task={task} />
-                    }
-                })}
-                </div>
-            }
+        <div className="md:mt-7">
+            <TaskList
+                isGrid={isGrid}
+                title="Here is the your all today tasks"
+                tasks={todayTask}
+                emptyMessage="No Today Tasks"
+                icon={AiOutlineInbox}
+            />
         </div>
-        </div>
-    )
+        )
 }

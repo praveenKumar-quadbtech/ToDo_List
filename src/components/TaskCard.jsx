@@ -1,19 +1,38 @@
 import React, { useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
-import { MdDeleteForever } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { onShow } from "../redux/slices/sideBarSlice";
 import { BiSolidEdit } from "react-icons/bi";
-import { deleteTask, updateTask } from "../redux/slices/todoSlice";
+import {  updateTask } from "../redux/slices/todoSlice";
 import { RightSidebar } from "./RightSidebar";
 
 export const TaskCard = ({ task }) => {
   const dispatch = useDispatch();
-  const { isOpen } = useSelector((state) => state.sidebar);
   const { isGrid } = useSelector((state) => state.themeAndLayout);
   const [isEditBar, setIsEditBar] = useState(false)
 
+  const [formData, setFormData] = useState({ ...task })
   
+  const handelChange = (e) => {
+    const { name, value } = e.target
+
+    if (name === "steps") {
+      setFormData((prev) => ({
+        ...prev,
+        steps: [...prev?.steps, value]
+      }));
+      return
+    }
+    if (name === "reminders") {
+      const formateDate = new Date(value)
+      setFormData((prev) => ({
+        ...prev,
+        reminders: [...prev?.reminders, value],
+      }));
+    }
+    else {
+      setFormData({ ...formData, [name]: value })
+    }
+  }
 
   const toggleEditBar = () => {
     setIsEditBar(!isEditBar)
@@ -43,23 +62,32 @@ export const TaskCard = ({ task }) => {
     );
   };
 
+const handleUpdateTask = ()=>{
+   dispatch(
+    updateTask({
+      id: task.id,
+      data: formData
+    })
+  )
+  toggleEditBar(false)
+}
 
+// styles
   const cardContStyling = `bg-[#FBFDFC] cursor-pointer dark:bg-[#232323] dark:text-white flex justify-between items-baseline  md:items-center  ${isGrid ? "shadow-md py-5 px-2 rounded-md text-sm/2 md:text-md" : "border-b-2 dark:border-b-[0.5px] py-4 px-4"}  border-green-100  transition-all`
 
-  const editBarSmStyling = `dark:bg-[#232323] dark:text-white bg-green-100 shadow-md shadow-black dark:shadow-white rounded-t-2xl  absolute border-[0.5px] rounded-sm  -bottom-12 left-4 right-4 pt-4  md:w-[30%] overflow-y-auto transition-all duration-300 transform ${isEditBar ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"} z-40`
-  
   const getCss = () => `
   dark:bg-[#232323] dark:text-white bg-green-100 shadow-md shadow-black dark:shadow-white 
   border-[0.5px] rounded-sm overflow-y-auto transition-all duration-300 
   transform z-40
 
   /* Small Screen Styles */
-  rounded-t-2xl absolute bottom-4 left-4 right-4 pt-4
+  rounded-t-3xl absolute bottom-0 h-[85vh] left-1 right-1 pt-4
   ${isEditBar ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}
 
   /* Medium Screen Styles */
   md:w-[30%] md:right-0 md:rounded-none md:top-0 md:left-auto md:bottom-auto
 `;
+
   return (
     <div
       className={cardContStyling}
@@ -99,7 +127,7 @@ export const TaskCard = ({ task }) => {
         { isEditBar && (
         <div className={getCss()}>
             <form>
-              <RightSidebar handelChange={() => { }} toggleRightForm={toggleEditBar} formData={task} formType={"edit"} />
+            <RightSidebar handelChange={handelChange} toggleRightForm={toggleEditBar} formData={formData} formType={"edit"} handleAdd={handleUpdateTask}/>
             </form>
           </div>
         )}

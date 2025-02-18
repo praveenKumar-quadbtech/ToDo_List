@@ -29,7 +29,7 @@ const taskSlice = createSlice({
         createdAt: currentDate,
         deadline: payload.deadline ?? "No deadline",
         steps: payload.steps ?? [],
-        reminder: payload.reminders ?? [], // date with time
+        reminders: payload.reminders ?? [], // date with time
         repeat: payload.repeat ?? "",
         description: payload.description ?? ""
       });

@@ -1,6 +1,11 @@
 const UserProfileIcon = ({ user }) => {
     const initial = user?.name?.charAt(0).toUpperCase() || "?";
 
+    let name = user?.name
+    if (name.length > 15) {
+        name = name.split(" ")
+        name = name[0] + " " + name[1]
+    }
     return (
         <div className="flex md:flex-col md:gap-1 items-center justify-center">
             {/* Profile icon */}
@@ -11,9 +16,9 @@ const UserProfileIcon = ({ user }) => {
                 {initial}
             </div>
             {/* User's full name */}
-            <span className="hidden md:flex items-center dark:text-white">
-                <p className="text-[10px]  mb-0 pb-0">Hey👋</p>
-                <h3 className="text-[12px] md:text-sm md:font-medium mb-0 pb-0">{user?.name}</h3>
+            <span className="hidden md:flex items-center dark:text-white text-[11px]">
+                <p className="text-[11px] mb-0 pb-0">Hey👋</p>
+                <h3 className="text-[10px] md:text-sm md:font-medium mb-0 pb-0">{name}</h3>
             </span>
         </div>
     );

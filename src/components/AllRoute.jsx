@@ -8,7 +8,7 @@ import { TodayTask } from "../pagas/TodayTask";
 import { ImportentTask } from "../pagas/ImportentTask";
 import { PlanedTask } from "../pagas/PlanedTask";
 import { AssignedTask } from "../pagas/AssignedTask";
-import { PendingTask } from "../pagas/PendingTask";
+
 
 // 🔹 Public Routes Array
 const publicRoutes = [
@@ -23,7 +23,6 @@ const privateRoutes = [
   { path: "/important", element: ImportentTask },
   { path: "/planned", element: PlanedTask },
   { path: "/assigned", element: AssignedTask },
-  { path: "/pending", element: PendingTask },
 ];
 
 export const AllRoute = ({ isRightBar, toggleRightBar, isLeftBar }) => {

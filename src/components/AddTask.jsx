@@ -34,8 +34,6 @@ export const AddTask = ({ addNew, toggleTaskForm, toggleRightForm, isRightForm }
         }
         if (name === "reminders") {
             const formateDate = new Date(value)
-            console.log("from handelChange", formateDate.toLocaleString());
-            
             setFormData((prev) => ({
                 ...prev,
                 reminders: [...prev.reminders, value],
@@ -70,11 +68,11 @@ export const AddTask = ({ addNew, toggleTaskForm, toggleRightForm, isRightForm }
   transform z-40
 
   /* Small Screen Styles */
-  rounded-t-2xl absolute bottom-4 left-4 right-4 pt-4
+  rounded-t-3xl absolute -bottom-1 h-[85vh] left-1 right-1 pt-4
   ${isRightForm ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}
 
   /* Medium Screen Styles */
-  md:w-[30%] md:right-0 md:rounded-none md:top-0 md:left-auto md:bottom-auto
+  md:w-[30%] md:right-0 md:rounded-sm md:top-0 md:left-auto md:bottom-auto md:shadow-sm
 `;
 
     

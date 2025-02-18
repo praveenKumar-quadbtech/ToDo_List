@@ -1,10 +1,8 @@
 import { AiOutlineCheckCircle, AiOutlineInbox } from "react-icons/ai";
-import { TaskCard } from "./TaskCard";
 import { useSelector } from "react-redux";
-import themeAndLayoutSlice from './../redux/slices/themeAndLayoutSlice';
 import TaskList from "./TaskList";
 
-export const TaskContainer = ({ toggleTaskForm }) => {
+export const TaskContainer = ({ toggleTaskForm, isRightBar }) => {
     const { tasks } = useSelector((state) => state.todos);
     const { isGrid } = useSelector((state) => state.themeAndLayout);
 
@@ -24,8 +22,7 @@ export const TaskContainer = ({ toggleTaskForm }) => {
         </div>
     }
 
-    // console.log("cont" , tasks);
-    
+   
     return (
         <div className={`flex flex-col w-full dark:bg-[#242424] gap-2 dark:text-white transition-all`} onClick={() => toggleTaskForm(false)}>
             <TaskList
@@ -34,6 +31,7 @@ export const TaskContainer = ({ toggleTaskForm }) => {
                 tasks={pendingTask}
                 icon={AiOutlineInbox}
                 emptyMessage="No Pending Tasks"
+                isRightBar={isRightBar}
             />
             <TaskList
                 isGrid={isGrid}
@@ -41,6 +39,7 @@ export const TaskContainer = ({ toggleTaskForm }) => {
                 tasks={completedTask}
                 icon={AiOutlineCheckCircle}
                 emptyMessage="No Completed Tasks"
+                isRightBar={isRightBar}
             />
         </div>
     );

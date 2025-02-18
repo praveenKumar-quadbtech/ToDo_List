@@ -59,7 +59,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
         <div className="flex flex-col pt-16">
             <div className="flex flex-col gap-1 dark:bg-[#2C2C2C] bg-[#EEF6EF] px-3 relative py-5 rounded-md">
                 {/* user profile */}
-                <div className="hidden md:flex justify-center items-center md:absolute top-[-35px] left-1/2 transform -translate-x-1/2">
+                <div className="hidden md:flex w-full justify-center items-center md:absolute top-[-35px] left-1/2 transform -translate-x-1/2">
                     {/* <img src="" alt="" /> */}
                     {user ?
                         <button onClick={() => setisActive(!isActive)}>
@@ -70,9 +70,9 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                     }
                 </div>
                 {/* user actions button */}
-                <div className={`${isActive ? "flex" : "invisible"} flex-col justify-center items-center z-10 pt-2 absolute`}>
-                    <button onClick={() => setisActive(!isActive)} className="py-[2px] shadow-sm bg-[#FBFDFC] border-b-[2px] w-[70%] hover:text-green-400">My Profile</button>
-                    <button onClick={handelLogout} className="py-[2px] shadow-sm bg-[#FBFDFC] w-[70%] hover:text-green-400">Logout</button>
+                <div className={`${isActive ? "flex" : "invisible"} flex-col justify-center items-center z-10 top-7 absolute left-7 right-7 m-auto border bg-[#FBFDFC] rounded-sm shadow-md shadow-white dark:shadow-black`}>
+                    <button onClick={() => setisActive(!isActive)} className="py-[2px] shadow-sm w-full  border-b-[2px] hover:text-green-400">My Profile</button>
+                    <button onClick={handelLogout} className="py-[2px] shadow-sm  w-full hover:text-green-400">Logout</button>
                 </div>
                 {/* links */}
                 <div className=" bg-[#FBFDFC] dark:bg-[#232323] dark:text-white shadow-md rounded-md flex items-center md:mt-9 py-4">

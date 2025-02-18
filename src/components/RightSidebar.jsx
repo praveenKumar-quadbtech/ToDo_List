@@ -13,8 +13,9 @@ import { ShowSteps } from "./ShowSteps";
 import { ShowReminders } from "./ShowReminders";
 
 export const RightSidebar = ({ toggleRightForm, handelChange, formData, formType, handleAdd }) => {
+    console.log(formData);
+    
     const dispatch = useDispatch();
-    const [step, setStep] = useState("");
     const [isStepAdd, setisStepAdd] = useState(false)
     const [isOpen, setIsOpen] = useState(false);
     const [isErr, setErr] = useState("")
@@ -45,7 +46,7 @@ export const RightSidebar = ({ toggleRightForm, handelChange, formData, formType
     }, [formData])
 
     return (
-        <div className="w-100% bg-green-100 dark:bg-[#232323] dark:text-white flex flex-col-reverse md:flex-col justify-between gap-7 md:gap-10 pb-4">
+        <div className="w-100% bg-green-100 dark:bg-[#232323] dark:text-white flex flex-col-reverse md:flex-col justify-between gap-2 sm:gap-4 md:gap-10 pb-4">
             <div className="flex flex-col gap-2 text-sm">
                 {/* Title Input */}
 
@@ -65,7 +66,7 @@ export const RightSidebar = ({ toggleRightForm, handelChange, formData, formType
 
                     {/* Add Steps */}
                     {isStepAdd ?
-                        <AddStaps handleStepKeyDown={handleStepKeyDown} removeStep={() => setisStepAdd(false)} step={step} />
+                        <AddStaps handleStepKeyDown={handleStepKeyDown} removeStep={() => setisStepAdd(false)} />
                         :
                         <button onClick={() => setisStepAdd(true)} className="text-sm flex gap-2 items-center">
                             <IoMdAdd /> Add Step
@@ -122,7 +123,7 @@ export const RightSidebar = ({ toggleRightForm, handelChange, formData, formType
                 </div>
 
                 {/* Notes Input */}
-                <span className="border-b-[0.5px] border-black dark:border-green-100 px-3 py-1">
+                <span className="md:border-b-[0.5px] border-black dark:border-green-100 px-3 py-1">
                     <textarea
                         className="w-[90%] m-auto py-1 px-2  rounded-md focus:border-[0.5px] dark:bg-[#2c2c2c] dark:text-white  border-black dark:border-green-100 outline-none"
                         placeholder="Add Notes"
@@ -136,12 +137,17 @@ export const RightSidebar = ({ toggleRightForm, handelChange, formData, formType
             </div>
 
             {/* Footer */}
-            <div className="w-full flex justify-between px-5 pt-1 pb-3 md:px-3 md:py-3 items-center border-b border-green-100">
+            <div className="w-full flex justify-between px-5 pt-1 pb-3 md:px-3 md:py-3 items-center">
                 <IoCloseSharp onClick={() => toggleRightForm(false)} className="cursor-pointer size-8 md:size-6" />
                 <p>Created Today</p>
                 {formType === "add" ? 
-                    <button className="bg-[#357937E0] rounded-md px-3 py-1 font-bold text-white" onClick={handleAdd}><MdFileDownloadDone size={20}/></button> 
-                : <MdDeleteForever onClick={handleDelete} className="cursor-pointer size-6" />}
+                    <MdFileDownloadDone onClick={handleAdd} className="cursor-pointer size-6 rounded-md bg-black dark:bg-white  text-white dark:text-black" />
+                :
+                <div className="flex gap-2 items-center">
+                        <MdFileDownloadDone onClick={handleAdd} className="cursor-pointer size-6 rounded-md bg-black dark:bg-white  text-white dark:text-black" />
+                        <MdDeleteForever onClick={handleDelete} className="cursor-pointer size-8" />
+                </div>
+                 }
             </div>
         </div>
     );

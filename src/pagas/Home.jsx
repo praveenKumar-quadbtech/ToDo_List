@@ -51,7 +51,7 @@ const Home = ({ isRightBar, toggleRightBar, isLeftBar }) => {
         />
 
         {/* Task Container */}
-        <TaskContainer toggleTaskForm={toggleTaskForm} />
+        <TaskContainer toggleTaskForm={toggleTaskForm} isRightBar ={isRightBar}/>
       </div>
     </div>
   );
